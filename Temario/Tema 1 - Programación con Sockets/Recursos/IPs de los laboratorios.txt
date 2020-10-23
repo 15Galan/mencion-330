@@ -1,0 +1,21 @@
+Red       => 192.168.164.0
+Mask      => 255.255.252.0
+Router    => 192.168.167.254
+Broadcast => 192.168.167.255
+multicast => 239.194.17.132 y 239.194.17.133
+
+Laboratorio 3.1.6
+  Físicas:    192.168.164.201 - 240
+  Virtuales:  192.168.165.201 - 240
+
+Laboratorio 3.1.7
+  Físicas:    192.168.166.1 - 40
+  Virtuales:  192.168.167.1 - 40
+
+Laboratorio 3.1.9
+  Físicas:    192.168.166.41 - 80
+  Virtuales:  192.168.167.41 - 80
+
+Laboratorio 3.1.10
+  Físicas:    192.168.166.81 - 120
+  Virtuales:  192.168.167.81 - 120
