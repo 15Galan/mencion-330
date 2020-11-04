@@ -93,13 +93,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -122,7 +124,8 @@
       <updated>1603277084643</updated>
       <workItem from="1603277085705" duration="5395000" />
       <workItem from="1603300940260" duration="8112000" />
-      <workItem from="1603463988020" duration="1474000" />
+      <workItem from="1603463988020" duration="1798000" />
+      <workItem from="1604510435773" duration="350000" />
     </task>
     <servers />
   </component>
@@ -160,26 +163,26 @@
       <screen x="0" y="0" width="1280" height="984" />
     </state>
     <state x="420" y="246" key="FileChooserDialogImpl/0.0.1280.984@0.0.1280.984" timestamp="1603362196300" />
-    <state width="1271" height="281" key="GridCell.Tab.0.bottom" timestamp="1603468389416">
+    <state width="1271" height="281" key="GridCell.Tab.0.bottom" timestamp="1603471406249">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="325" key="GridCell.Tab.0.bottom/0.0.1280.984@0.0.1280.984" timestamp="1603448635920" />
-    <state width="1271" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1603468389416" />
-    <state width="1271" height="281" key="GridCell.Tab.0.center" timestamp="1603468389416">
+    <state width="1271" height="281" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1603471406249" />
+    <state width="1271" height="281" key="GridCell.Tab.0.center" timestamp="1603471406249">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="325" key="GridCell.Tab.0.center/0.0.1280.984@0.0.1280.984" timestamp="1603448635920" />
-    <state width="1271" height="281" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1603468389416" />
-    <state width="1271" height="281" key="GridCell.Tab.0.left" timestamp="1603468389416">
+    <state width="1271" height="281" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1603471406249" />
+    <state width="1271" height="281" key="GridCell.Tab.0.left" timestamp="1603471406249">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="325" key="GridCell.Tab.0.left/0.0.1280.984@0.0.1280.984" timestamp="1603448635920" />
-    <state width="1271" height="281" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1603468389416" />
-    <state width="1271" height="281" key="GridCell.Tab.0.right" timestamp="1603468389416">
+    <state width="1271" height="281" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1603471406249" />
+    <state width="1271" height="281" key="GridCell.Tab.0.right" timestamp="1603471406249">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1237" height="325" key="GridCell.Tab.0.right/0.0.1280.984@0.0.1280.984" timestamp="1603448635920" />
-    <state width="1271" height="281" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1603468389416" />
+    <state width="1271" height="281" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1603471406249" />
     <state width="1237" height="325" key="GridCell.Tab.1.bottom" timestamp="1603448635920">
       <screen x="0" y="0" width="1280" height="984" />
     </state>
