@@ -12,6 +12,8 @@ public class Cliente {
     // Interfaz
     private static final CMDsimple cmd = new CMDsimple();   // Simulación de consola
 
+    // Paquetes
+    private static String modo = "octet";    // Modo de lectura/escritura de paquetes WRQ y RRQ
 
     public static void main(String[] args) {
         comprobarArgumentos(args);
@@ -90,13 +92,8 @@ public class Cliente {
 
                     break;
 
-                case ("quit"):
-                    cmd.escribir("Terminando conexion...");
-                    seguir = false;
-                    break;
-
-                case ("?"):
-                    cmd.escribir(cmd.getInfo());
+                case ("mode"):
+                    modo = cmd.getArgumento1();
                     break;
 
                 case ("put"):
@@ -119,6 +116,15 @@ public class Cliente {
 
                     break;
 
+                case ("quit"):
+                    cmd.escribir("Conexión con " + direccion + ":" + puerto + " finalizada.");
+                    seguir = false;
+                    break;
+
+                case ("?"):
+                    cmd.escribir(cmd.getInfo());
+                    break;
+
                 default:
                     cmd.error("Comando no registrado");
             }
@@ -130,18 +136,16 @@ public class Cliente {
      *
      * @param fichero   Archivo a enviar.
      */
-    public static void enviar(String fichero){
-        try {
-            // Inicialización de variables
-            FileInputStream entrada = new FileInputStream(fichero);
+    public static void enviar(String fichero) {
+        try (FileInputStream entrada = new FileInputStream(fichero)) {
             boolean terminado = false;
 
             // Enviar petición de escritura (WRQ)
-            WRQ paqueteWQR = new WRQ();
-            paqueteWQR.montar();
-            // paqueteWQR.fichero = fichero;          // Asignar el fichero
+            WRQ paqueteWQR = new WRQ(fichero, modo);
 
-            // DatagramPacket paquete = new DatagramPacket(paqueteWQR.montar(), paqueteWQR.buffer.length, direccion, puerto);    // Primer buffer
+            paqueteWQR.montar();
+            paqueteWQR.setFichero(fichero);          // Asignar el fichero
+
             DatagramPacket paquete = new DatagramPacket(paqueteWQR.buffer, paqueteWQR.buffer.length, direccion, puerto);
             socket.send(paquete);
 

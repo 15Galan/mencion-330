@@ -2,35 +2,36 @@ import Paquetes.*;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketException;
+import java.net.*;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Servidor {
 
-    private static final int PUERTO = 6789;
-    private static final int BUFFER = 512;      // Bytes
-    private static boolean fin = false;         // Variable que indica el final del servicio.
+    // Parámetros
+    private static int puerto = 6789;
+    private static boolean fin = false;         // Variable que indica el final del servicio
+
+    // Datos
+    private static String cliente;
+    private static String fichero;
+    private static String modo = "octet";
 
     public static void main(String[] args) {
+        comprobarArgumentos(args);
 
-        try (DatagramSocket socket = new DatagramSocket(PUERTO)) {
-            System.out.println("SERVIDOR ACTIVO\nEsperando paquete...");
+        try (DatagramSocket socket = new DatagramSocket(puerto)) {
+            System.out.println("Servidor activo sobre el puerto " + puerto);
 
             while(!fin) {
-                DatagramPacket paquete = new DatagramPacket(new byte[BUFFER], BUFFER);
+                DatagramPacket paquete = new DatagramPacket(new byte[1024], 1024);
                 socket.receive(paquete);
 
-                byte[] datos = paquete.getData();
+                cliente = paquete.getAddress() + ":" + paquete.getPort();
 
-                switch (leerOPCODE(datos)) {
-                    case 1 -> accionRRQ(datos);
-                    case 2 -> accionWRQ(datos);
-                    case 3 -> accionDATA(datos);
-                    case 4 -> accionACK(datos);
-                    case 5 -> accionERROR(datos);
-                    default -> System.err.println("El OPCODE del paquete no pertence al protocolo TFTP");
-                }
+                System.out.println("Cliente conectado: " + cliente);
+
+                leerPaquete(paquete);
             }
 
         } catch (SocketException e) {
@@ -43,31 +44,102 @@ public class Servidor {
 
 
     /**
-     * Lee el OPCODE de un paquete para filtrar.
+     * Comprueba si ya existen argumentos para la clase.
+     *
+     * @param argumentos    Argumentos iniciales (si los hay)
+     */
+    private static void comprobarArgumentos(String[] argumentos) {
+        if(argumentos.length == 1){
+            puerto = Integer.parseInt(argumentos[0]);
+
+        } else {
+            Scanner sc = new Scanner(System.in);
+            System.err.println("No se encontraron suficientes parametros para la clase");
+
+            System.out.print("Asignar puerto: ");
+
+            try {
+                puerto = sc.nextInt();
+
+            } catch (InputMismatchException e) {
+                System.out.println("Error, puerto por defecto asignado.");
+            }
+        }
+    }
+
+    /**
+     * Identifica el tipo de paquete recibido y ejecuta una
+     * acción en base al mismo.
+     *
+     * @param paquete   Paquete a identificar
+     */
+    private static void leerPaquete(DatagramPacket paquete) {
+        byte[] buffer = paquete.getData();
+
+        try {
+            switch (leerOPCODE(buffer)) {
+                case 1 -> accionRRQ(buffer);
+                case 2 -> accionWRQ(buffer);
+                case 3 -> accionDATA(buffer);
+                case 4 -> accionACK(buffer);
+                case 5 -> accionERROR(buffer);
+                default -> System.err.println("El OPCODE " + leerOPCODE(buffer) + " no pertence al protocolo TFTP.");
+            }
+
+        } catch (IOException e) {
+            System.err.println("Algo ha salido mal.");
+        }
+    }
+
+    /**
+     * Lee el opcode de un paquete para identificar su estructura.
      *
      * @param buffer    Datos de un DatagramPacket recibido
      *
-     * @return  El OPCODE del paquete
-     *
-     * @throws IOException  Error de lectura
+     * @return  El opcode del paquete
      */
-    public static short leerOPCODE(byte[] buffer) throws IOException {
-        ByteArrayInputStream byteStream = new ByteArrayInputStream(buffer);
-        DataInputStream in = new DataInputStream(byteStream);
+    public static int leerOPCODE(byte[] buffer) {
+        short opcode;
 
-        return in.readShort();
+        try {
+            DataInputStream in = new DataInputStream(new ByteArrayInputStream(buffer));
+            opcode = in.readShort();
+
+        } catch (IOException e) {
+            opcode = -1;
+        }
+
+        return opcode;
     }
 
     public static void accionRRQ(byte[] buffer) throws IOException {
-        // TODO
+//        RRQ rrq = new RRQ(buffer);
+//
+//        rrq.desmontar();
+//
+//        fichero = rrq.fichero;
     }
 
     public static void accionWRQ(byte[] buffer) throws IOException {
-        // TODO
+        // Se extrae la información del paquete recibido
+        WRQ paquete = new WRQ(buffer);
+
+        paquete.desmontar();
+        fichero = paquete.getFichero();
+        modo = paquete.getModo();
+
+//        System.out.println("Petición WRQ para: " + fichero);
+
+        // Comienza el proceso de intercambio
+
     }
 
-    public static void accionDATA(byte[] buffer) throws IOException {
-        // TODO
+    public static void accionDATA(byte[] paquete) throws IOException {
+//        Paquete_DATA data = new Paquete_DATA(paquete);
+//
+//        data.desmontar();
+//
+//        data.bloque;
     }
 
     public static void accionACK(byte[] buffer) throws IOException {

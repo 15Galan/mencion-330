@@ -7,23 +7,27 @@ public class CMDsimple {
     private String[] argumentos;    // Comando y sus argumentos
 
 
+    public CMDsimple() {
+        this("TFTP");
+    }
+
     public CMDsimple(String nombre) {
         this.nombre = nombre;
 
-        info =         "Comando       Argumentos       Descripcion\n" +
-                "       ---------+------------------+-----------------------------------------------\n" +
-                "       connect     <IP>  <puerto>     Registrar el servidor con los datos indicados\n" +
-                "       get         <fichero>          Recibir el archivo del servidor registrado\n" +
-                "       put         <fichero>          Enviar el archivo al servidor registrado\n" +
-                "       quit                           Terminar la conexion y cerrar el cliente\n" +
-                "       ?                              Muestra esta lista de informacion";
+        info =         "Comando              Argumentos             Descripcion\n" +
+                "       ---------+-------------------------------+-----------------------------------------------------\n" +
+                "       connect     <IP>  <puerto>                  Registrar el servidor con los datos indicados\n" +
+//                "       connect                                     Mostrar los datos del servidor actual\n" +
+                "       mode        <octet|ascii|netascii|mail>     Cambiar el modo de lectura/escritura de WRQ y RRQ\n" +
+//                "       mode                                        Mostrar el modo de lectura/escritura actual" +
+                "       get         <fichero>                       Recibir el archivo del servidor registrado\n" +
+                "       put         <fichero>                       Enviar el archivo al servidor registrado\n" +
+                "       quit                                        Terminar la conexión y cerrar el cliente\n" +
+                "       ?                                           Mostrar de nuevo esta lista de comandos";
 
         argumentos = new String[3];     // El comando más largo requiere 2 argumentos
     }
 
-    public CMDsimple() {
-        new CMDsimple("TFTP");
-    }
 
     // Setters
     public void setNombre(String nombre) {
