@@ -1,3 +1,5 @@
+package Herramientas;
+
 import java.util.Scanner;
 
 public class CMDsimple {
@@ -17,9 +19,9 @@ public class CMDsimple {
         info =         "Comando              Argumentos             Descripcion\n" +
                 "       ---------+-------------------------------+-----------------------------------------------------\n" +
                 "       connect     <IP>  <puerto>                  Registrar el servidor con los datos indicados\n" +
-//                "       connect                                     Mostrar los datos del servidor actual\n" +
+                "       connect                                     Mostrar los datos del servidor actual\n" +
                 "       mode        <octet|ascii|netascii|mail>     Cambiar el modo de lectura/escritura de WRQ y RRQ\n" +
-//                "       mode                                        Mostrar el modo de lectura/escritura actual" +
+                "       mode                                        Mostrar el modo de lectura/escritura actual\n" +
                 "       get         <fichero>                       Recibir el archivo del servidor registrado\n" +
                 "       put         <fichero>                       Enviar el archivo al servidor registrado\n" +
                 "       quit                                        Terminar la conexión y cerrar el cliente\n" +
@@ -78,6 +80,7 @@ public class CMDsimple {
                 System.out.println(nombre + " > " + "Hay más argumentos de la cuenta: máximo 3.");
                 argumentos = new String[3];
             }
+
         } while (error);
     }
 
@@ -87,14 +90,14 @@ public class CMDsimple {
      * @param mensaje   Mensaje a mostrar.
      */
     public void escribir(String mensaje) {
-        try {
-            Thread.sleep(500);
+//        try {
+//            Thread.sleep(500);
             System.out.println(nombre + " > " + mensaje);
-            Thread.sleep(500);
+//            Thread.sleep(500);
 
-        } catch (InterruptedException e){
-            System.err.println(nombre + " > error");
-        }
+//        } catch (InterruptedException e){
+//            System.err.println(nombre + " > error");
+//        }
     }
 
     /**
@@ -111,5 +114,14 @@ public class CMDsimple {
         } catch (InterruptedException e){
             System.err.println(nombre + " > " + error);
         }
+    }
+
+    /**
+     * Indica si un comando ha sido escrito sin argumentos.
+     *
+     * @return      Booleano respecto a la ausencia de argumentos
+     */
+    public boolean soloComando() {
+        return argumentos.length == 1;
     }
 }

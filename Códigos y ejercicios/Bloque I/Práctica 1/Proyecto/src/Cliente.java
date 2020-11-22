@@ -1,3 +1,4 @@
+import Herramientas.CMDsimple;
 import Paquetes.*;
 import java.io.*;
 import java.net.*;
@@ -13,9 +14,12 @@ public class Cliente {
     private static final CMDsimple cmd = new CMDsimple();   // Simulación de consola
 
     // Paquetes
+    private final static int RECEPCION_MAX = 1024;
     private static String modo = "octet";    // Modo de lectura/escritura de paquetes WRQ y RRQ
 
     public static void main(String[] args) {
+        cmd.escribir(cmd.getInfo());
+
         comprobarArgumentos(args);
 
         try {
@@ -23,7 +27,6 @@ public class Cliente {
 
             // Final de la conexión
             if (direccion != null) {
-                cmd.escribir("Conexión finalizada con " + direccion + ":" + puerto);
                 socket.close();
 
             } else {
@@ -84,16 +87,33 @@ public class Cliente {
 
             switch (comando.toLowerCase()) {
                 case ("connect"):
-                    direccion = InetAddress.getByName(cmd.getArgumento1());
-                    puerto = Integer.parseInt(cmd.getArgumento2());
-                    socket = new DatagramSocket(puerto, direccion);
+                    if (!cmd.soloComando()) {
+                        direccion = InetAddress.getByName(cmd.getArgumento1());
+                        puerto = Integer.parseInt(cmd.getArgumento2());
+                        socket = new DatagramSocket();
 
-                    cmd.escribir("Conectado a " + direccion + ":" + puerto);
+                    } else if (socket != null) {
+                        cmd.escribir("Estás conectado a '" + direccion + ":" + puerto + "'");
+
+                    } else {
+                        cmd.escribir("No estás conectado a ningún servidor");
+                    }
 
                     break;
 
                 case ("mode"):
-                    modo = cmd.getArgumento1();
+                    if (!cmd.soloComando()) {
+                        if (modo.equals(cmd.getArgumento1().toLowerCase())) {
+                            cmd.escribir("Ese es el modo actual");
+                        } else {
+                            modo = cmd.getArgumento1();
+                            cmd.escribir("Modo cambiado");
+                        }
+
+                    } else {
+                        cmd.escribir("Estás trabajando en modo '" + modo + "'");
+                    }
+
                     break;
 
                 case ("put"):
@@ -138,79 +158,76 @@ public class Cliente {
      */
     public static void enviar(String fichero) {
         try (FileInputStream entrada = new FileInputStream(fichero)) {
-            boolean terminado = false;
 
             // Enviar petición de escritura (WRQ)
-            WRQ paqueteWQR = new WRQ(fichero, modo);
+            WRQ escritura = new WRQ(fichero, modo);
+            escritura.montar();
 
-            paqueteWQR.montar();
-            paqueteWQR.setFichero(fichero);          // Asignar el fichero
-
-            DatagramPacket paquete = new DatagramPacket(paqueteWQR.buffer, paqueteWQR.buffer.length, direccion, puerto);
+            DatagramPacket paquete = new DatagramPacket(escritura.buffer, escritura.buffer.length, direccion, puerto);
             socket.send(paquete);
 
-//            // Recibir ACK(0) del servidor.
-//            socket.receive(paquete);            // Sobreescritura del contenido del buffer
-//            byte[] datos = paquete.getData();   // Obtener los datos (payload) del buffer
-//
-//            Paquete_ACK paqueteACK = new Paquete_ACK();
-//            paqueteACK.buffer = datos;
-//            paqueteACK.desmontar(new byte[10]);
-//
-//            int ACK = paqueteACK.bloque;
-//
-//            // Dividir el archivo y enviarlo poco a poco.
-//            while(entrada.available() > 0 || terminado){
-//                byte[] leido = new byte[512];
-//                int numBytes = entrada.read(leido);
-//
-//                try {
-//                    Paquete_DATA paqueteDATA = new Paquete_DATA();
-//                    paqueteDATA.setDatos(leido, numBytes);      // Datos del paquete
-//                    paqueteDATA.montar();                       // Crear estructura
-//
-//                    paquete = new DatagramPacket(paqueteDATA.buffer, paqueteDATA.buffer.length);
-//                    paquete.setData(paqueteDATA.buffer);
-//
-//                }catch (IOException e){
-//                    cmd.error("Error al crear el paquete DATA");
-//
-//                    Paquete_ERROR paqueteERROR = new Paquete_ERROR();
-//                    paqueteERROR.codigo = 0;
-//                    paqueteERROR.mensaje = paqueteERROR.ERROR_0;
-//
-//                    paquete = new DatagramPacket(paqueteERROR.buffer, paqueteERROR.buffer.length);
-//                    paquete.setData(paqueteERROR.buffer);
-//                }
-//
-//                socket.send(paquete);
-//
-//                socket.receive(paquete);
-//
-//                byte[] buffer = paquete.getData();
-//                Paquete_ERROR paqueteERROR = new Paquete_ERROR();
-//                Paquete_ACK paquete_ACK = new Paquete_ACK();
-//                paqueteERROR.buffer = buffer;
-//                paquete_ACK.buffer = buffer;
-//
-//                if (paqueteERROR.opcode == 5){
-//                    cmd.error("Paquete de ERROR recibido. Codigo " + paqueteERROR.codigo + " - " + paqueteERROR.mensaje);
-//                    terminado = true;
-//
-//                } else if (paqueteACK.opcode == 4){
-//                    cmd.escribir("(<-) ACK: " + paquete_ACK.bloque);
-//
-//                    if(paquete_ACK.bloque != ACK+1){
-//                        cmd.error("ACK incorrecto, se espera " + ACK+1);
-//                    }
-//                }
-//            }
+            cmd.escribir("WRQ " + escritura.getModo() + "  -------->");
+
+            // Cruce de ACKs y DATAs
+            intercambio(entrada);
 
         } catch (FileNotFoundException e) {
             cmd.error("No se ha encontrado el fichero");
 
         } catch (IOException e) {
             cmd.error("No se ha podido leer el fichero");
+        }
+    }
+
+    private static void intercambio(FileInputStream entrada) {
+        // TODO - Almacenar las particiones del archivo
+
+        try {
+            do {
+                // Recibir ACK del servidor
+                DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX, direccion, puerto);
+                socket.receive(paquete);
+
+                ACK confirmacion = new ACK(paquete.getData());
+                confirmacion.desmontar();
+
+                cmd.escribir("<----------------  ACK " + confirmacion.getBloque());
+
+                // Dividir el archivo y enviarlo poco a poco
+                byte[] particion = new byte[TFTP.LONGITUD_MAX];
+                int leido = entrada.read(particion);
+
+                // Ajustar el trozo si se leen menos
+                if (leido < TFTP.LONGITUD_MAX) {
+                    particion = new String(particion).trim().getBytes();
+                }
+
+                // Crear un DATA para el trozo
+                DATA datos = new DATA();
+                datos.setDatos(particion);
+                datos.setBloque(confirmacion.getBloque() + 1);
+                datos.montar();
+
+                // Enviar el DATA
+                paquete = new DatagramPacket(datos.buffer, datos.buffer.length, direccion, puerto);
+                socket.send(paquete);
+
+                cmd.escribir("DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")  -------->");
+
+            } while (entrada.available() > 0);
+
+            // Recibir el último ACK del servidor
+            DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX, direccion, puerto);
+            socket.receive(paquete);
+
+            ACK confirmacion = new ACK(paquete.getData());
+            confirmacion.desmontar();
+
+            cmd.escribir("<----------------  ACK " + confirmacion.getBloque());
+            cmd.escribir("Fichero enviado sin errores");
+
+        }  catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

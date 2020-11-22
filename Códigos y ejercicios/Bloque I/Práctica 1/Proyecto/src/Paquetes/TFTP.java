@@ -11,7 +11,7 @@ public interface TFTP {
      *
      * @throws IOException      No se ha podido montar el paquete
      */
-    public abstract void montar() throws IOException;
+    void montar() throws IOException;
 
     /**
      * Extrae la información de un paquete TFTP según la estructura
@@ -19,5 +19,5 @@ public interface TFTP {
      *
      * @throws IOException      No se ha podido desmontar el paquete
      */
-    public abstract void desmontar() throws IOException;
+    void desmontar() throws IOException;
 }

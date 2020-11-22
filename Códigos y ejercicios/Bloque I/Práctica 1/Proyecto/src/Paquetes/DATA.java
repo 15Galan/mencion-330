@@ -1,59 +1,56 @@
 package Paquetes;
 
 import java.io.*;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.util.Arrays;
 
-public class RRQ implements TFTP {
+public class DATA implements TFTP {
 
     // Paquete TFTP
-    public final short opcode = 1;
+    public short opcode = 3;
     public byte[] buffer;
 
-    // Paquete RRQ
-    private String fichero;
-    private String modo;
+    // Paquete DATA
+    private int bloque = 1;
+    private byte[] datos;
 
-
-    public RRQ() {
-        this(null, "octet");
+    public DATA() {
     }
 
-    public RRQ(String fichero, String modo) {
-        this.fichero = fichero;
-        this.modo = modo;
-    }
-
-    public RRQ(byte[] buffer) {
+    public DATA(byte[] buffer) {
         this.buffer = buffer;
+        datos  = new byte[LONGITUD_MAX];
     }
 
 
     // Getters
-    public String getFichero() {
-        return fichero;
+    public int getBloque() {
+        return bloque;
     }
 
-    public String getModo() {
-        return modo;
+    public byte[] getDatos() {
+        return datos;
     }
 
     // Setters
-    public void setFichero(String fichero) {
-        this.fichero = fichero;
+    public void setBloque(int valor) {
+        bloque = valor;
     }
 
-    public void setModo(String modo) {
-        this.modo = modo;
+    public void setDatos(byte[] datos) {
+        this.datos = datos;
     }
 
 
     /**
-     * Construye un buffer de tipo "Read Request" (RRQ)
+     * Construye un buffer de tipo "Data" (DATA)
      * cuya estructura es la siguiente:
      *
-     *  2 bytes    String    1 byte    String    1 byte
-     *  ------------------------------------------------
-     * |   01  |   fichero   |   0  |    modo    |   0  |
-     *  ------------------------------------------------
+     *  2 bytes    2 bytes       n bytes
+     *  -----------------------------------
+     * |  03   |   bloque #  |    datos    |
+     *  -----------------------------------
      */
     @Override
     public void montar() throws IOException {
@@ -61,21 +58,26 @@ public class RRQ implements TFTP {
         DataOutputStream out = new DataOutputStream(byteStream);
 
         out.writeShort(opcode);
-        out.write(fichero.getBytes());
-        out.writeByte(0);
-        out.write(modo.toLowerCase().getBytes());
-        out.writeByte(0);
+        out.writeShort(bloque);
+        out.write(datos);
 
         buffer = byteStream.toByteArray();
     }
 
     @Override
     public void desmontar() throws IOException {
-        DataInputStream in = new DataInputStream(new ByteArrayInputStream(buffer));
+        ByteArrayInputStream byteStream = new ByteArrayInputStream(buffer);
+        DataInputStream in = new DataInputStream(byteStream);
 
         in.readShort();     // Ignorar opcode
-        fichero = new String(leerDatos(in)).trim();
-        modo = new String(leerDatos(in)).trim();
+        bloque = in.readShort();
+        datos = leerDatos(in);
+
+//        datos = new String(datos).trim().getBytes();    // Limpiar bytes nulos sobrantes
+    }
+
+    public void actualizar() {
+        bloque++;
     }
 
     /**
@@ -91,19 +93,19 @@ public class RRQ implements TFTP {
      */
     private byte[] leerDatos(DataInputStream stream) throws IOException {
         byte[] fichero = new byte[LONGITUD_MAX];
-        int i = 0;
+        int leido = 0;
         byte b;
 
         do {
             b = stream.readByte();
 
             if (b != 0) {
-                fichero[i] = b;
-                i++;
+                fichero[leido] = b;
+                leido++;
             }
 
         } while (b != 0);
 
-        return fichero;
+        return Arrays.copyOfRange(fichero, 0, leido);
     }
 }

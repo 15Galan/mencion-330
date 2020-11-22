@@ -1,27 +1,25 @@
 package Paquetes;
 
 import java.io.*;
-import java.util.Arrays;
 
 public class WRQ implements TFTP {
 
     // Paquete TFTP
-    public short opcode;
+    public final short opcode = 2;
     public byte[] buffer;
 
     // Paquete WRQ
     private String fichero;
-    private String modo = "octet";
+    private String modo;
 
 
     public WRQ() {
-        this(null, null);
+        this(null, "octet");
     }
 
     public WRQ(String fichero, String modo) {
         this.fichero = fichero;
         this.modo = modo;
-        opcode = 2;
     }
 
     public WRQ(byte[] buffer) {
@@ -56,15 +54,13 @@ public class WRQ implements TFTP {
      *  ------------------------------------------------
      * |   02  |   fichero   |   0  |    modo    |   0  |
      *  ------------------------------------------------
-     *
-     * @return  Buffer con la estructura mencionada
      */
     @Override
     public void montar() throws IOException {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(byteStream);
 
-        out.writeShort(opcode);              // 1 short ocupa 2 bytes
+        out.writeShort(opcode);
         out.write(fichero.getBytes());
         out.writeByte(0);
         out.write(modo.toLowerCase().getBytes());
@@ -77,7 +73,7 @@ public class WRQ implements TFTP {
     public void desmontar() throws IOException {
         DataInputStream in = new DataInputStream(new ByteArrayInputStream(buffer));
 
-        opcode = in.readShort();
+        in.readShort();     // Ignorar opcode
         fichero = new String(leerDatos(in)).trim();
         modo = new String(leerDatos(in)).trim();
     }

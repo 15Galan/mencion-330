@@ -1,6 +1,7 @@
 import Paquetes.*;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.*;
 import java.util.InputMismatchException;
@@ -8,34 +9,46 @@ import java.util.Scanner;
 
 public class Servidor {
 
+    // Conexión
+    private static DatagramSocket socket;
+    private static InetAddress direccion;
+    private static int puerto;
+
     // Parámetros
-    private static int puerto = 6789;
-    private static boolean fin = false;         // Variable que indica el final del servicio
+    private final static int RECEPCION_MAX = 1024;
+    private static int puerto_local = 6789;
 
     // Datos
-    private static String cliente;
-    private static String fichero;
-    private static String modo = "octet";
+    private static byte[] contenido = new byte[0];
 
     public static void main(String[] args) {
         comprobarArgumentos(args);
 
-        try (DatagramSocket socket = new DatagramSocket(puerto)) {
-            System.out.println("Servidor activo sobre el puerto " + puerto);
+        try {
+            socket = new DatagramSocket(puerto_local);
 
-            while(!fin) {
-                DatagramPacket paquete = new DatagramPacket(new byte[1024], 1024);
+            System.out.println("Servidor activo sobre el puerto " + puerto_local);
+
+            // TODO - Indicar una condición mejor de fin de servicio
+
+            while(true) {
+                System.out.println("Esperando conexión...");
+
+                DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX);
                 socket.receive(paquete);
 
-                cliente = paquete.getAddress() + ":" + paquete.getPort();
+                direccion = paquete.getAddress();
+                puerto = paquete.getPort();
 
-                System.out.println("Cliente conectado: " + cliente);
+                System.out.println("Cliente conectado: " + direccion + ":" + puerto);
 
                 leerPaquete(paquete);
             }
 
+//            socket.close();
+
         } catch (SocketException e) {
-            System.err.println("Error en la conexion: '" + e.getMessage() + "'");
+            System.err.println("Error en la conexión: '" + e.getMessage() + "'");
 
         } catch (IOException e) {
             System.err.println("Error en la lectura de los datos");
@@ -50,7 +63,7 @@ public class Servidor {
      */
     private static void comprobarArgumentos(String[] argumentos) {
         if(argumentos.length == 1){
-            puerto = Integer.parseInt(argumentos[0]);
+            puerto_local = Integer.parseInt(argumentos[0]);
 
         } else {
             Scanner sc = new Scanner(System.in);
@@ -59,7 +72,7 @@ public class Servidor {
             System.out.print("Asignar puerto: ");
 
             try {
-                puerto = sc.nextInt();
+                puerto_local = sc.nextInt();
 
             } catch (InputMismatchException e) {
                 System.out.println("Error, puerto por defecto asignado.");
@@ -121,17 +134,28 @@ public class Servidor {
     }
 
     public static void accionWRQ(byte[] buffer) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        String ruta;
+
+        // Se guarda la ruta donde escribir el fichero
+        System.out.println("Petición WRQ recibida.");
+        System.out.print("Guardar el fichero en la ruta: ");
+        ruta = sc.nextLine();
+
         // Se extrae la información del paquete recibido
         WRQ paquete = new WRQ(buffer);
-
         paquete.desmontar();
-        fichero = paquete.getFichero();
-        modo = paquete.getModo();
 
-//        System.out.println("Petición WRQ para: " + fichero);
+        // Cruces de ACKs y DATAs
+        intercambio();
 
-        // Comienza el proceso de intercambio
+        // Se escribe el fichero
+        FileOutputStream out = new FileOutputStream(ruta);
 
+        out.write(contenido);
+        out.close();
+
+        System.out.println("Fichero escrito.");
     }
 
     public static void accionDATA(byte[] paquete) throws IOException {
@@ -148,5 +172,65 @@ public class Servidor {
 
     public static void accionERROR(byte[] buffer) throws IOException {
         // TODO
+    }
+
+    /**
+     * Realiza un intercambio de paquetes DATAs y ACKs.
+     *
+     * @throws IOException      Un paquete no se ha leído correctamente
+     */
+    private static void intercambio() throws IOException {
+        // Inicializar los paquetes DATA (recibido) y ACK (enviado)
+        boolean terminar = false;
+
+        // Crear el ACK (0)
+        ACK confirmacion = new ACK();
+        confirmacion.montar();
+
+        // Enviar el ACK (0)
+        socket.send(new DatagramPacket(confirmacion.buffer, confirmacion.buffer.length, direccion, puerto));
+
+        do {
+            // Recibir DATA
+            DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX, direccion, puerto);
+            socket.receive(paquete);
+
+            // Guardar datos
+            DATA datos = new DATA(paquete.getData());
+            datos.desmontar();
+
+            System.out.println("\tRecibido DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")");
+
+            contenido = agregar(datos.getDatos());
+
+            if (datos.getDatos().length < TFTP.LONGITUD_MAX) {
+                terminar = true;
+            }
+
+            // Actualizar el ACK
+            confirmacion.actualizar();
+            confirmacion.montar();
+
+            // Enviar el ACK
+            socket.send(new DatagramPacket(confirmacion.buffer, confirmacion.buffer.length, direccion, puerto));
+
+        } while (!terminar);
+    }
+
+    /**
+     * Concatena los datos recibidos en un paquete DATA con los datos
+     * recibidos anteriormente.
+     *
+     * @param datos     Trozo de fichero recibido
+     *
+     * @return      Array con los datos anteriores y actuales
+     */
+    private static byte[] agregar(byte[] datos) {
+        byte[] union = new byte[contenido.length + datos.length];
+
+        System.arraycopy(contenido, 0, union, 0, contenido.length);
+        System.arraycopy(datos, 0, union, contenido.length, datos.length);
+
+        return union;
     }
 }
