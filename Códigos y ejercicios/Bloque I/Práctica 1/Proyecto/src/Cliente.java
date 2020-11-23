@@ -25,14 +25,6 @@ public class Cliente {
         try {
             detectarComandos();
 
-            // Final de la conexión
-            if (direccion != null) {
-                socket.close();
-
-            } else {
-                cmd.error("No se establecio ninguna conexión");;
-            }
-
         } catch (NullPointerException e){
             cmd.error("Argumento(s) nulo(s)");
 
@@ -83,6 +75,7 @@ public class Cliente {
 
         while (seguir) {
             cmd.leer();
+
             String comando = cmd.getComando();
 
             switch (comando.toLowerCase()) {
@@ -128,7 +121,7 @@ public class Cliente {
 
                 case ("get"):
                     if (socket != null) {
-                        recibir();
+                        recibir(cmd.getArgumento1());
 
                     } else {
                         cmd.error("Conexion aun no inicializada");
@@ -137,7 +130,11 @@ public class Cliente {
                     break;
 
                 case ("quit"):
-                    cmd.escribir("Conexión con " + direccion + ":" + puerto + " finalizada.");
+                    if (socket != null) {
+                        cmd.escribir("Conexión con " + direccion + ":" + puerto + " finalizada.");
+                        socket.close();
+                    }
+
                     seguir = false;
                     break;
 
@@ -157,7 +154,7 @@ public class Cliente {
      * @param fichero   Archivo a enviar.
      */
     public static void enviar(String fichero) {
-        try (FileInputStream entrada = new FileInputStream(fichero)) {
+        try {
 
             // Enviar petición de escritura (WRQ)
             WRQ escritura = new WRQ(fichero, modo);
@@ -166,10 +163,10 @@ public class Cliente {
             DatagramPacket paquete = new DatagramPacket(escritura.buffer, escritura.buffer.length, direccion, puerto);
             socket.send(paquete);
 
-            cmd.escribir("WRQ " + escritura.getModo() + "  -------->");
+            cmd.escribir("WRQ '" + escritura.getModo() + "'  -------->");
 
             // Cruce de ACKs y DATAs
-            intercambio(entrada);
+            intercambio(fichero);
 
         } catch (FileNotFoundException e) {
             cmd.error("No se ha encontrado el fichero");
@@ -179,10 +176,13 @@ public class Cliente {
         }
     }
 
-    private static void intercambio(FileInputStream entrada) {
-        // TODO - Almacenar las particiones del archivo
-
-        try {
+    /**
+     * Ejecuta el intercambio de paquetes ACKs y DATAs entre el cliente y el servidor.
+     *
+     * @param fichero   stream de lectura
+     */
+    private static void intercambio(String fichero) {
+        try (FileInputStream lector = new FileInputStream(fichero)) {
             do {
                 // Recibir ACK del servidor
                 DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX, direccion, puerto);
@@ -195,7 +195,7 @@ public class Cliente {
 
                 // Dividir el archivo y enviarlo poco a poco
                 byte[] particion = new byte[TFTP.LONGITUD_MAX];
-                int leido = entrada.read(particion);
+                int leido = lector.read(particion);
 
                 // Ajustar el trozo si se leen menos
                 if (leido < TFTP.LONGITUD_MAX) {
@@ -216,7 +216,7 @@ public class Cliente {
 
                 cmd.escribir("DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")  -------->");
 
-            } while (entrada.available() > 0);
+            } while (lector.available() > 0);
 
             // Recibir el último ACK del servidor
             DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX, direccion, puerto);
@@ -233,7 +233,15 @@ public class Cliente {
         }
     }
 
-    public static void recibir(){
-        // TODO - Recibir paquete
+    public static void recibir(String fichero) {
+        try (FileOutputStream salida = new FileOutputStream(fichero)) {
+            RRQ paquete = new RRQ(fichero, "octet");
+            paquete.montar();
+
+            socket.send(new DatagramPacket(paquete.buffer, paquete.buffer.length, direccion, puerto));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
