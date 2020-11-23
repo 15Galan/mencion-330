@@ -19,7 +19,7 @@ public class Servidor {
     private static int puerto_local = 6789;
 
     // Datos
-    private static byte[] contenido = new byte[0];
+    private static byte[] contenido;
 
     public static void main(String[] args) {
         comprobarArgumentos(args);
@@ -41,6 +41,8 @@ public class Servidor {
                 puerto = paquete.getPort();
 
                 System.out.println("Cliente conectado: " + direccion + ":" + puerto);
+
+                contenido = new byte[0];    // Se inicia (o reinicia) antes de cada archivo
 
                 leerPaquete(paquete);
             }
@@ -221,15 +223,15 @@ public class Servidor {
      * Concatena los datos recibidos en un paquete DATA con los datos
      * recibidos anteriormente.
      *
-     * @param datos     Trozo de fichero recibido
+     * @param particion     Partición de fichero recibida
      *
      * @return      Array con los datos anteriores y actuales
      */
-    private static byte[] agregar(byte[] datos) {
-        byte[] union = new byte[contenido.length + datos.length];
+    private static byte[] agregar(byte[] particion) {
+        byte[] union = new byte[contenido.length + particion.length];
 
         System.arraycopy(contenido, 0, union, 0, contenido.length);
-        System.arraycopy(datos, 0, union, contenido.length, datos.length);
+        System.arraycopy(particion, 0, union, contenido.length, particion.length);
 
         return union;
     }

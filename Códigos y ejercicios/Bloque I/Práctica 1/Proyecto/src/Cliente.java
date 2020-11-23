@@ -199,7 +199,9 @@ public class Cliente {
 
                 // Ajustar el trozo si se leen menos
                 if (leido < TFTP.LONGITUD_MAX) {
-                    particion = new String(particion).trim().getBytes();
+                    byte[] aux = new byte[leido];
+                    System.arraycopy(particion, 0, aux, 0, leido);
+                    particion = aux;
                 }
 
                 // Crear un DATA para el trozo
