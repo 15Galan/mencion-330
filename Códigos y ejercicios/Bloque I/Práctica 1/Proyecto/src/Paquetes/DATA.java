@@ -1,9 +1,6 @@
 package Paquetes;
 
 import java.io.*;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.util.Arrays;
 
 public class DATA implements TFTP {
 
@@ -72,40 +69,9 @@ public class DATA implements TFTP {
         in.readShort();     // Ignorar opcode
         bloque = in.readShort();
         datos = leerDatos(in);
-
-//        datos = new String(datos).trim().getBytes();    // Limpiar bytes nulos sobrantes
     }
 
     public void actualizar() {
         bloque++;
-    }
-
-    /**
-     * Lee un array de bytes hasta el byte nulo (byte 0), a través de
-     * un stream de datos, que contiene el array de bytes del que leer.
-     * Este método también lee el byte nulo, pero no lo incluye.
-     *
-     * @param stream    Stream de datos que lee un array de bytes
-     *
-     * @return          Un array de bytes sin incluir el byte nulo (byte 0)
-     *
-     * @throws IOException  El array de bytes no pudo leerse correctamente
-     */
-    private byte[] leerDatos(DataInputStream stream) throws IOException {
-        byte[] fichero = new byte[LONGITUD_MAX];
-        int leido = 0;
-        byte b;
-
-        do {
-            b = stream.readByte();
-
-            if (b != 0) {
-                fichero[leido] = b;
-                leido++;
-            }
-
-        } while (b != 0);
-
-        return Arrays.copyOfRange(fichero, 0, leido);
     }
 }

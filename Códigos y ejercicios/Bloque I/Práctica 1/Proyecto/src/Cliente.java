@@ -1,12 +1,13 @@
-import Herramientas.CMDsimple;
+import Herramientas.*;
 import Paquetes.*;
+
 import java.io.*;
 import java.net.*;
 
 public class Cliente {
 
     // Conexión
-    private static DatagramSocket socket;
+    private static DatagramSocket socket;   // Socket con el servidor
     private static InetAddress direccion;   // Dirección del servidor
     private static int puerto;              // Puerto del servidor
 
@@ -15,7 +16,8 @@ public class Cliente {
 
     // Paquetes
     private final static int RECEPCION_MAX = 1024;
-    private static String modo = "octet";    // Modo de lectura/escritura de paquetes WRQ y RRQ
+    private static String modo = "octet";           // Modo por defecto de lectura/escritura de paquetes WRQ y RRQ
+    private static byte[] contenido;                // Fichero en el caso de RRQ
 
     public static void main(String[] args) {
         cmd.escribir(cmd.getInfo());
@@ -59,7 +61,7 @@ public class Cliente {
             }
 
         } else {
-            cmd.escribir("No se encontraron suficientes parametros para la clase");
+            cmd.escribir("No se encontraron parametros iniciales para la clase");
         }
     }
 
@@ -98,6 +100,7 @@ public class Cliente {
                     if (!cmd.soloComando()) {
                         if (modo.equals(cmd.getArgumento1().toLowerCase())) {
                             cmd.escribir("Ese es el modo actual");
+
                         } else {
                             modo = cmd.getArgumento1();
                             cmd.escribir("Modo cambiado");
@@ -111,7 +114,7 @@ public class Cliente {
 
                 case ("put"):
                     if (socket != null) {
-                        enviar(cmd.getArgumento1());
+                        enviar(new File(cmd.getArgumento1()));
 
                     } else {
                         cmd.error("Conexion aun no inicializada");
@@ -121,7 +124,7 @@ public class Cliente {
 
                 case ("get"):
                     if (socket != null) {
-                        recibir(cmd.getArgumento1());
+                        recibir(new File(cmd.getArgumento1()));
 
                     } else {
                         cmd.error("Conexion aun no inicializada");
@@ -135,7 +138,10 @@ public class Cliente {
                         socket.close();
                     }
 
+                    cmd.escribir("Cliente TFTP cerrado.");
+
                     seguir = false;
+
                     break;
 
                 case ("?"):
@@ -151,13 +157,13 @@ public class Cliente {
     /**
      * Genera un paquete WRQ y lo envía al servidor si está conectado a uno.
      *
-     * @param fichero   Archivo a enviar.
+     * @param archivo   Archivo a enviar.
      */
-    public static void enviar(String fichero) {
-        try {
+    public static void enviar(File archivo) {
+        try (FileInputStream lector = new FileInputStream(archivo)) {
 
             // Enviar petición de escritura (WRQ)
-            WRQ escritura = new WRQ(fichero, modo);
+            WRQ escritura = new WRQ(archivo.getName(), modo);
             escritura.montar();
 
             DatagramPacket paquete = new DatagramPacket(escritura.buffer, escritura.buffer.length, direccion, puerto);
@@ -166,7 +172,7 @@ public class Cliente {
             cmd.escribir("WRQ '" + escritura.getModo() + "'  -------->");
 
             // Cruce de ACKs y DATAs
-            intercambio(fichero);
+            intercambioWRQ(lector);
 
         } catch (FileNotFoundException e) {
             cmd.error("No se ha encontrado el fichero");
@@ -179,10 +185,10 @@ public class Cliente {
     /**
      * Ejecuta el intercambio de paquetes ACKs y DATAs entre el cliente y el servidor.
      *
-     * @param fichero   stream de lectura
+     * @param lector   stream de lectura del fichero
      */
-    private static void intercambio(String fichero) {
-        try (FileInputStream lector = new FileInputStream(fichero)) {
+    private static void intercambioWRQ(FileInputStream lector) {
+        try {
             do {
                 // Recibir ACK del servidor
                 DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX, direccion, puerto);
@@ -193,20 +199,9 @@ public class Cliente {
 
                 cmd.escribir("<----------------  ACK " + confirmacion.getBloque());
 
-                // Dividir el archivo y enviarlo poco a poco
-                byte[] particion = new byte[TFTP.LONGITUD_MAX];
-                int leido = lector.read(particion);
-
-                // Ajustar el trozo si se leen menos
-                if (leido < TFTP.LONGITUD_MAX) {
-                    byte[] aux = new byte[leido];
-                    System.arraycopy(particion, 0, aux, 0, leido);
-                    particion = aux;
-                }
-
                 // Crear un DATA para el trozo
                 DATA datos = new DATA();
-                datos.setDatos(particion);
+                datos.setDatos(Funciones.crearParticion(lector));
                 datos.setBloque(confirmacion.getBloque() + 1);
                 datos.montar();
 
@@ -233,15 +228,67 @@ public class Cliente {
         }
     }
 
-    public static void recibir(String fichero) {
-        try (FileOutputStream salida = new FileOutputStream(fichero)) {
-            RRQ paquete = new RRQ(fichero, "octet");
+    public static void recibir(File archivo) {
+        contenido = new byte[0];
+
+        try {
+            // Se crea la petición RRQ
+            RRQ paquete = new RRQ(archivo.getName(), "octet");
             paquete.montar();
 
+            // Se envía la petición RRQ
             socket.send(new DatagramPacket(paquete.buffer, paquete.buffer.length, direccion, puerto));
 
+            intercambioRRQ();
+
+            // Se crea el fichero
+            File fichero = new File("src/Archivos/Cliente/" + archivo.getName());
+            fichero.createNewFile();
+
+            // Se escribe el fichero
+            FileOutputStream out = new FileOutputStream(fichero.getAbsolutePath());
+
+            out.write(contenido);
+            out.close();
+
+            System.out.println("Fichero escrito.");
+
+        } catch (FileNotFoundException e) {
+            cmd.error("No se ha encontrado el fichero");
+
         } catch (IOException e) {
-            e.printStackTrace();
+            cmd.error("No se ha podido leer el fichero");
         }
+    }
+
+    private static void intercambioRRQ() throws IOException {
+        boolean terminar = false;
+
+        do {
+            // Recibir DATA
+            DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX, direccion, puerto);
+            socket.receive(paquete);
+
+            // Guardar datos
+            DATA datos = new DATA(paquete.getData());
+            datos.desmontar();
+
+            System.out.println("\tRecibido DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")");
+
+            contenido = Funciones.agregar(contenido, datos.getDatos());
+
+            if (datos.getDatos().length < TFTP.LONGITUD_MAX) {
+                terminar = true;
+            }
+
+            // Crear el ACK (n)
+            ACK confirmacion = new ACK();
+            confirmacion.setBloque(datos.getBloque());
+            confirmacion.montar();
+
+            // Enviar el ACK
+            socket.send(new DatagramPacket(confirmacion.buffer, confirmacion.buffer.length, direccion, puerto));
+
+        } while (!terminar);
     }
 }

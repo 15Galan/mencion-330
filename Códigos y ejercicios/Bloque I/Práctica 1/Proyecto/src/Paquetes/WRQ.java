@@ -74,36 +74,7 @@ public class WRQ implements TFTP {
         DataInputStream in = new DataInputStream(new ByteArrayInputStream(buffer));
 
         in.readShort();     // Ignorar opcode
-        fichero = new String(leerDatos(in)).trim();
-        modo = new String(leerDatos(in)).trim();
-    }
-
-    /**
-     * Lee un array de bytes hasta el byte nulo (byte 0), a través de
-     * un stream de datos, que contiene el array de bytes del que leer.
-     * Este método también lee el byte nulo, pero no lo incluye.
-     *
-     * @param stream    Stream de datos que lee un array de bytes
-     *
-     * @return          Un array de bytes sin incluir el byte nulo (byte 0)
-     *
-     * @throws IOException  El array de bytes no pudo leerse correctamente
-     */
-    private byte[] leerDatos(DataInputStream stream) throws IOException {
-        byte[] fichero = new byte[LONGITUD_MAX];
-        int i = 0;
-        byte b;
-
-        do {
-            b = stream.readByte();
-
-            if (b != 0) {
-                fichero[i] = b;
-                i++;
-            }
-
-        } while (b != 0);
-
-        return fichero;
+        fichero = new String(leerDatos(in));
+        modo = new String(leerDatos(in));
     }
 }
