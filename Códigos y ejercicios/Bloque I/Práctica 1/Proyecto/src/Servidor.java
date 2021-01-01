@@ -108,6 +108,13 @@ public class Servidor {
         }
     }
 
+    /**
+     * Realiza una transacción RRQ.
+     *
+     * @param buffer    Paquete RRQ recibido
+     *
+     * @throws IOException  La transacción ha fallado
+     */
     public static void accionRRQ(byte[] buffer) throws IOException {
         System.out.println("Petición RRQ recibida.");
 
@@ -130,6 +137,13 @@ public class Servidor {
 
     }
 
+    /**
+     * Realiza una transacción WRQ.
+     *
+     * @param buffer    Paquete WRQ recibido
+     *
+     * @throws IOException  La transacción ha fallado
+     */
     public static void accionWRQ(byte[] buffer) throws IOException {
         System.out.println("Petición WRQ recibida.");
 
@@ -150,6 +164,11 @@ public class Servidor {
         }
     }
 
+    /**
+     * Realiza un intercambio de paquetes DATAs y ACKs.
+     *
+     * @throws IOException      Un paquete no se ha leído correctamente
+     */
     private static void intercambioRRQ(File fichero) throws IOException {
         boolean terminar = false;
 

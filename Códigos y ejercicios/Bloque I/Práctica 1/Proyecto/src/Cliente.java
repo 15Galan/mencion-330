@@ -117,7 +117,7 @@ public class Cliente {
                         enviar(new File(cmd.getArgumento1()));
 
                     } else {
-                        cmd.error("Conexion aun no inicializada");
+                        cmd.error("Conexión aun no inicializada.");
                     }
 
                     break;
@@ -127,7 +127,7 @@ public class Cliente {
                         recibir(new File(cmd.getArgumento1()));
 
                     } else {
-                        cmd.error("Conexion aun no inicializada");
+                        cmd.error("Conexión aun no inicializada.");
                     }
 
                     break;
@@ -151,6 +151,40 @@ public class Cliente {
                 default:
                     cmd.error("Comando no registrado");
             }
+        }
+    }
+
+    /**
+     * Genera un paquete RRQ y lo envía al servidor si está conectado a uno.
+     *
+     * @param archivo   Archivo a enviar.
+     */
+    public static void recibir(File archivo) {
+        byte[] contenido;     // Contenido del fichero que se recibe
+
+        try {
+            // Crear y enviar la petición RRQ
+            RRQ peticion = new RRQ(archivo.getName(), "octet");
+            socket.send(new DatagramPacket(peticion.buffer, peticion.buffer.length, direccion, puerto));
+
+            cmd.escribir("RRQ '" + archivo.getName() + "'  -------->");
+
+            // Cruce de DATAs y ACKs
+            contenido = intercambioRRQ();
+
+            // Se crea el fichero y se escribe
+            if (Funciones.escribirFichero(contenido, new File("src/Archivos/Cliente/" + archivo.getName()))) {
+                cmd.escribir("Fichero recibido correctamente.");
+
+            } else {
+                cmd.error("Fallo al recibir el fichero.");
+            }
+
+        } catch (FileNotFoundException e) {
+            cmd.error("No se ha encontrado el fichero");
+
+        } catch (IOException e) {
+            cmd.error("No se ha podido leer el fichero");
         }
     }
 
@@ -222,35 +256,9 @@ public class Cliente {
         }
     }
 
-    public static void recibir(File archivo) {
-        byte[] contenido;     // Contenido del fichero que se recibe
-
-        try {
-            // Crear y enviar la petición RRQ
-            RRQ peticion = new RRQ(archivo.getName(), "octet");
-            socket.send(new DatagramPacket(peticion.buffer, peticion.buffer.length, direccion, puerto));
-
-            cmd.escribir("RRQ '" + archivo.getName() + "'  -------->");
-
-            // Cruce de DATAs y ACKs
-            contenido = intercambioRRQ();
-
-            // Se crea el fichero y se escribe
-            if (Funciones.escribirFichero(contenido, new File("src/Archivos/Cliente/" + archivo.getName()))) {
-                cmd.escribir("Fichero recibido correctamente.");
-
-            } else {
-                cmd.error("Fallo al recibir el fichero.");
-            }
-
-        } catch (FileNotFoundException e) {
-            cmd.error("No se ha encontrado el fichero");
-
-        } catch (IOException e) {
-            cmd.error("No se ha podido leer el fichero");
-        }
-    }
-
+    /**
+     * Ejecuta el intercambio de paquetes DATAs y ACKs entre el cliente y el servidor.
+     */
     private static byte[] intercambioRRQ() throws IOException {
         byte[] contenido = new byte[0];
         boolean terminar = false;
