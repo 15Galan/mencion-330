@@ -17,7 +17,7 @@ public class Cliente {
     // Paquetes
     private final static int RECEPCION_MAX = 1024;
     private static String modo = "octet";           // Modo por defecto de lectura/escritura de paquetes WRQ y RRQ
-    private static byte[] contenido;                // Fichero en el caso de RRQ
+
 
     public static void main(String[] args) {
         cmd.escribir(cmd.getInfo());
@@ -160,19 +160,18 @@ public class Cliente {
      * @param archivo   Archivo a enviar.
      */
     public static void enviar(File archivo) {
-        try (FileInputStream lector = new FileInputStream(archivo)) {
+        try {
 
             // Enviar petición de escritura (WRQ)
-            WRQ escritura = new WRQ(archivo.getName(), modo);
-            escritura.montar();
+            WRQ peticion = new WRQ(archivo.getName(), modo);
 
-            DatagramPacket paquete = new DatagramPacket(escritura.buffer, escritura.buffer.length, direccion, puerto);
+            DatagramPacket paquete = new DatagramPacket(peticion.buffer, peticion.buffer.length, direccion, puerto);
             socket.send(paquete);
 
-            cmd.escribir("WRQ '" + escritura.getModo() + "'  -------->");
+            cmd.escribir("WRQ '" + peticion.getModo() + "'  -------->");
 
             // Cruce de ACKs y DATAs
-            intercambioWRQ(lector);
+            intercambioWRQ(archivo);
 
         } catch (FileNotFoundException e) {
             cmd.error("No se ha encontrado el fichero");
@@ -185,25 +184,21 @@ public class Cliente {
     /**
      * Ejecuta el intercambio de paquetes ACKs y DATAs entre el cliente y el servidor.
      *
-     * @param lector   stream de lectura del fichero
+     * @param archivo   Fichero que enviar
      */
-    private static void intercambioWRQ(FileInputStream lector) {
-        try {
+    private static void intercambioWRQ(File archivo) {
+        try (FileInputStream lector = new FileInputStream(archivo)) {
             do {
                 // Recibir ACK del servidor
                 DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX, direccion, puerto);
                 socket.receive(paquete);
 
                 ACK confirmacion = new ACK(paquete.getData());
-                confirmacion.desmontar();
 
                 cmd.escribir("<----------------  ACK " + confirmacion.getBloque());
 
                 // Crear un DATA para el trozo
-                DATA datos = new DATA();
-                datos.setDatos(Funciones.crearParticion(lector));
-                datos.setBloque(confirmacion.getBloque() + 1);
-                datos.montar();
+                DATA datos = new DATA(Funciones.crearParticion(lector), confirmacion.getBloque() + 1);
 
                 // Enviar el DATA
                 paquete = new DatagramPacket(datos.buffer, datos.buffer.length, direccion, puerto);
@@ -218,7 +213,6 @@ public class Cliente {
             socket.receive(paquete);
 
             ACK confirmacion = new ACK(paquete.getData());
-            confirmacion.desmontar();
 
             cmd.escribir("<----------------  ACK " + confirmacion.getBloque());
             cmd.escribir("Fichero enviado sin errores");
@@ -229,29 +223,25 @@ public class Cliente {
     }
 
     public static void recibir(File archivo) {
-        contenido = new byte[0];
+        byte[] contenido;     // Contenido del fichero que se recibe
 
         try {
-            // Se crea la petición RRQ
-            RRQ paquete = new RRQ(archivo.getName(), "octet");
-            paquete.montar();
+            // Crear y enviar la petición RRQ
+            RRQ peticion = new RRQ(archivo.getName(), "octet");
+            socket.send(new DatagramPacket(peticion.buffer, peticion.buffer.length, direccion, puerto));
 
-            // Se envía la petición RRQ
-            socket.send(new DatagramPacket(paquete.buffer, paquete.buffer.length, direccion, puerto));
+            cmd.escribir("RRQ '" + archivo.getName() + "'  -------->");
 
-            intercambioRRQ();
+            // Cruce de DATAs y ACKs
+            contenido = intercambioRRQ();
 
-            // Se crea el fichero
-            File fichero = new File("src/Archivos/Cliente/" + archivo.getName());
-            fichero.createNewFile();
+            // Se crea el fichero y se escribe
+            if (Funciones.escribirFichero(contenido, new File("src/Archivos/Cliente/" + archivo.getName()))) {
+                cmd.escribir("Fichero recibido correctamente.");
 
-            // Se escribe el fichero
-            FileOutputStream out = new FileOutputStream(fichero.getAbsolutePath());
-
-            out.write(contenido);
-            out.close();
-
-            System.out.println("Fichero escrito.");
+            } else {
+                cmd.error("Fallo al recibir el fichero.");
+            }
 
         } catch (FileNotFoundException e) {
             cmd.error("No se ha encontrado el fichero");
@@ -261,7 +251,8 @@ public class Cliente {
         }
     }
 
-    private static void intercambioRRQ() throws IOException {
+    private static byte[] intercambioRRQ() throws IOException {
+        byte[] contenido = new byte[0];
         boolean terminar = false;
 
         do {
@@ -269,26 +260,26 @@ public class Cliente {
             DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX, direccion, puerto);
             socket.receive(paquete);
 
-            // Guardar datos
+            // Guardar los datos
             DATA datos = new DATA(paquete.getData());
-            datos.desmontar();
 
-            System.out.println("\tRecibido DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")");
+            cmd.escribir("<----------------  DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")");
 
+            // Añadir la partición al contenido del fichero
             contenido = Funciones.agregar(contenido, datos.getDatos());
 
             if (datos.getDatos().length < TFTP.LONGITUD_MAX) {
                 terminar = true;
             }
 
-            // Crear el ACK (n)
-            ACK confirmacion = new ACK();
-            confirmacion.setBloque(datos.getBloque());
-            confirmacion.montar();
-
-            // Enviar el ACK
+            // Crear y enviar el ACK (n)
+            ACK confirmacion = new ACK(datos.getBloque());
             socket.send(new DatagramPacket(confirmacion.buffer, confirmacion.buffer.length, direccion, puerto));
 
+            cmd.escribir("ACK " + confirmacion.getBloque() + "  -------->");
+
         } while (!terminar);
+
+        return contenido;
     }
 }

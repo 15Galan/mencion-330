@@ -15,10 +15,8 @@ public class Servidor {
 
     // Parámetros
     private final static int RECEPCION_MAX = 1024;
-    private static int puerto_local = 6789;
+    private static int puerto_local = 5555;
 
-    // Datos
-    private static byte[] contenido;
 
     public static void main(String[] args) {
         comprobarArgumentos(args);
@@ -26,24 +24,24 @@ public class Servidor {
         try {
             socket = new DatagramSocket(puerto_local);
 
-            System.out.println("Servidor activo sobre el puerto " + puerto_local);
+            System.out.println("Servidor activo sobre el puerto " + puerto_local + ".");
 
             // TODO - Indicar una condición mejor de fin de servicio
 
             while(true) {
-                System.out.println("Esperando conexión...");
+                System.out.println("Esperando transacción...");
 
+                // Petición de transacción
                 DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX);
                 socket.receive(paquete);
 
+                // Datos del cliente
                 direccion = paquete.getAddress();
                 puerto = paquete.getPort();
 
                 System.out.println("Cliente conectado: " + direccion + ":" + puerto);
 
-                contenido = new byte[0];    // Se inicia (o reinicia) antes de cada archivo
-
-                leerPaquete(paquete);
+                recibirPeticion(paquete);
             }
 
 //            socket.close();
@@ -68,7 +66,7 @@ public class Servidor {
 
         } else {
             Scanner sc = new Scanner(System.in);
-            System.err.println("No se encontraron suficientes parametros para la clase");
+            System.err.println("No se encontraron suficientes parámetros para la clase");
 
             try {
                 do {
@@ -83,7 +81,7 @@ public class Servidor {
                 } while (puerto_local == 69);
 
             } catch (InputMismatchException e) {
-                System.out.println("Error, puerto por defecto asignado.");
+                System.out.println("Ha ocurrido un error; puerto por defecto asignado.");
             }
         }
     }
@@ -94,7 +92,7 @@ public class Servidor {
      *
      * @param paquete   Paquete a identificar
      */
-    private static void leerPaquete(DatagramPacket paquete) {
+    private static void recibirPeticion(DatagramPacket paquete) {
         byte[] buffer = paquete.getData();
         int opcode = Funciones.leerOPCODE(buffer);
 
@@ -113,15 +111,14 @@ public class Servidor {
     public static void accionRRQ(byte[] buffer) throws IOException {
         System.out.println("Petición RRQ recibida.");
 
-        // Se extrae la información del paquete recibido
+        // Extraer la información del paquete recibido
         RRQ rrq = new RRQ(buffer);
-        rrq.desmontar();
 
         File fichero = new File("src/Archivos/Servidor/" + rrq.getFichero());
 
         System.out.println("Se quiere leer el fichero: " + fichero.getName() + ".");
 
-        // Se comprueba que exista el archivo
+        // Comprobar que existe el archivo
         if (fichero.exists()) {
             System.out.println("Archivo encontrado.");
 
@@ -136,60 +133,54 @@ public class Servidor {
     public static void accionWRQ(byte[] buffer) throws IOException {
         System.out.println("Petición WRQ recibida.");
 
-        // Se extrae la información del paquete recibido
-        WRQ paquete = new WRQ(buffer);
-        paquete.desmontar();
+        byte[] contenido;     // Contenido del fichero que se recibe
 
-        // Se inicializa el fichero de destino
-        File fichero = new File("src/Archivos/Servidor/" + paquete.getFichero());
-        fichero.createNewFile();
+        // Se extrae la información del paquete recibido
+        WRQ peticion = new WRQ(buffer);
 
         // Cruces de ACKs y DATAs
-        intercambioWRQ();
+        contenido = intercambioWRQ();
 
         // Se escribe el fichero
-        FileOutputStream out = new FileOutputStream(fichero.getAbsolutePath());
+        if (Funciones.escribirFichero(contenido, new File("src/Archivos/Servidor/" + peticion.getFichero()))) {
+            System.out.println("\tFichero enviado.");
 
-        out.write(contenido);
-        out.close();
-
-        System.out.println("Fichero escrito.");
+        } else {
+            System.out.println("\tFallo al enviar el fichero.");
+        }
     }
 
     private static void intercambioRRQ(File fichero) throws IOException {
         boolean terminar = false;
 
+        // Crear flujo de escritura para el fichero
         FileInputStream lector = new FileInputStream(fichero);
 
-        // Crear el DATA (1)
-        DATA data = new DATA();
-        data.setDatos(Funciones.crearParticion(lector));
-        data.montar();
+        // Crear y enviar el DATA (1)
+        DATA datos = new DATA(Funciones.crearParticion(lector), 1);
+        socket.send(new DatagramPacket(datos.buffer, datos.buffer.length, direccion, puerto));
 
-        // Enviar el DATA (1)
-        socket.send(new DatagramPacket(data.buffer, data.buffer.length, direccion, puerto));
+        System.out.println("\tEnviado DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")");
 
         do {
-            // Recibir ACK
+            // Recibir ACK (n)
             DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX, direccion, puerto);
             socket.receive(paquete);
 
-            // Guardar datos
+            // Guardar datos del ACK (n)
             ACK confirmacion = new ACK(paquete.getData());
-            confirmacion.desmontar();
 
             System.out.println("\tRecibido ACK " + confirmacion.getBloque());
 
-            if (data.getDatos().length == TFTP.LONGITUD_MAX) {
-                // Actualizar el DATA
-                data.setDatos(Funciones.crearParticion(lector));
-                data.actualizar();
-                data.montar();
+            if (datos.getDatos().length == TFTP.LONGITUD_MAX) {
+                // Crear (actualizar) y enviar el DATA (n)
+                datos.setDatos(Funciones.crearParticion(lector));
+                datos.setBloque(confirmacion.getBloque() + 1);
+                datos.montar();
 
-                // Enviar el DATA
-                socket.send(new DatagramPacket(data.buffer, data.buffer.length, direccion, puerto));
+                socket.send(new DatagramPacket(datos.buffer, datos.buffer.length, direccion, puerto));
 
-            } else if (data.getBloque() == confirmacion.getBloque()) {
+            } else if (datos.getBloque() == confirmacion.getBloque()) {
                 terminar = true;
             }
 
@@ -199,44 +190,41 @@ public class Servidor {
     }
 
     /**
-     * Realiza un intercambio de paquetes DATAs y ACKs.
+     * Realiza un intercambio de paquetes ACKs y DATAs.
      *
      * @throws IOException      Un paquete no se ha leído correctamente
      */
-    private static void intercambioWRQ() throws IOException {
+    private static byte[] intercambioWRQ() throws IOException {
+        byte[] contenido = new byte[0];
         boolean terminar = false;
 
-        // Crear el ACK (0)
-        ACK confirmacion = new ACK();
-        confirmacion.montar();
-
-        // Enviar el ACK (0)
-        socket.send(new DatagramPacket(confirmacion.buffer, confirmacion.buffer.length, direccion, puerto));
+        // Crear y enviar el ACK (0)
+        ACK inicial = new ACK();
+        socket.send(new DatagramPacket(inicial.buffer, inicial.buffer.length, direccion, puerto));
 
         do {
-            // Recibir DATA
+            // Recibir DATA (n)
             DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX, direccion, puerto);
             socket.receive(paquete);
 
-            // Guardar datos
+            // Guardar los datos
             DATA datos = new DATA(paquete.getData());
-            datos.desmontar();
 
             System.out.println("\tRecibido DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")");
 
+            // Añadir la partición al contenido del fichero
             contenido = Funciones.agregar(contenido, datos.getDatos());
 
             if (datos.getDatos().length < TFTP.LONGITUD_MAX) {
                 terminar = true;
             }
 
-            // Actualizar el ACK
-            confirmacion.actualizar();
-            confirmacion.montar();
-
-            // Enviar el ACK
+            // Crear y enviar el ACK (n)
+            ACK confirmacion = new ACK(datos.getBloque());
             socket.send(new DatagramPacket(confirmacion.buffer, confirmacion.buffer.length, direccion, puerto));
 
         } while (!terminar);
+
+        return contenido;
     }
 }

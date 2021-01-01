@@ -11,11 +11,22 @@ public class ACK implements TFTP {
     // Paquete ACK
     private int bloque = 0;
 
-    public ACK() {
+
+    // Constructores
+    public ACK() throws IOException {
+        montar();
     }
 
-    public ACK(byte[] buffer) {
+    public ACK(int bloque) throws IOException {
+        this.bloque = bloque;
+
+        montar();
+    }
+
+    public ACK(byte[] buffer) throws IOException {
         this.buffer = buffer;
+
+        desmontar();
     }
 
 
@@ -57,9 +68,5 @@ public class ACK implements TFTP {
 
         in.readShort();     // Ignorar opcode
         bloque = in.readShort();
-    }
-
-    public void actualizar() {
-        bloque++;
     }
 }

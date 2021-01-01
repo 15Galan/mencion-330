@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public interface TFTP {
 
-    int LONGITUD_MAX = 512;     // Tamaño máximo de un trozo de fichero
+    int LONGITUD_MAX = 512;     // Tamaño máximo de una partición de fichero
 
     /**
      * Genera un paquete TFTP según la estructura indicada por su opcode.

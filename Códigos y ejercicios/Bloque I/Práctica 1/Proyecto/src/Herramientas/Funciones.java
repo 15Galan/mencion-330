@@ -2,10 +2,7 @@ package Herramientas;
 
 import Paquetes.TFTP;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 
 public class Funciones {
 
@@ -30,6 +27,16 @@ public class Funciones {
         return opcode;
     }
 
+    /**
+     * Lee 512 bytes (o menos) de un flujo de datos y los almacena en un array
+     * con la dimensión de los datos leídos, creando una partición de los datos.
+     *
+     * @param lector    Flujo de salida de datos del que crear la partición
+     *
+     * @return      Partición en forma de array de bytes
+     *
+     * @throws IOException  Hubo un problema al leer los datos
+     */
     public static byte[] crearParticion(FileInputStream lector) throws IOException {
         byte[] particion = new byte[TFTP.LONGITUD_MAX];
         int leido = lector.read(particion);     // Escribir en la partición
@@ -49,17 +56,46 @@ public class Funciones {
      * Concatena los datos recibidos en un paquete DATA con los datos
      * recibidos anteriormente.
      *
-     * @param datos         Datos totales
+     * @param contenido     Datos totales
      * @param particion     Partición de fichero recibida
      *
      * @return      Array con los datos anteriores y actuales
      */
-    public static byte[] agregar(byte[] datos, byte[] particion) {
-        byte[] union = new byte[datos.length + particion.length];
+    public static byte[] agregar(byte[] contenido, byte[] particion) {
+        byte[] union = new byte[contenido.length + particion.length];
 
-        System.arraycopy(datos, 0, union, 0, datos.length);
-        System.arraycopy(particion, 0, union, datos.length, particion.length);
+        System.arraycopy(contenido, 0, union, 0, contenido.length);
+        System.arraycopy(particion, 0, union, contenido.length, particion.length);
 
         return union;
+    }
+
+    /**
+     * Escribe el contenido de un array de bytes en un fichero.
+     *
+     * @param contenido     Datos a escribir
+     * @param fichero       Fichero donde escribir
+     *
+     * @return      TRUE si la operación tuvo éxito, FALSE en caso contrario
+     *
+     * @throws IOException  Hubo un problema con el fichero
+     */
+    public static boolean escribirFichero(byte[] contenido, File fichero) throws IOException {
+        boolean res;
+
+        if (fichero.createNewFile()) {
+            FileOutputStream escritor = new FileOutputStream(fichero.getAbsolutePath());     // Flujo de entrada de datos
+
+            // Escribir en el fichero
+            escritor.write(contenido);
+            escritor.close();
+
+            res = true;
+
+        } else {
+            res = false;
+        }
+
+        return res;
     }
 }

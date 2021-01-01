@@ -12,12 +12,19 @@ public class DATA implements TFTP {
     private int bloque = 1;
     private byte[] datos;
 
-    public DATA() {
+
+    // Constructores
+    public DATA(byte[] datos, int bloque) throws IOException {
+        this.datos  = datos;
+        this.bloque = bloque;
+
+        montar();
     }
 
-    public DATA(byte[] buffer) {
+    public DATA(byte[] buffer) throws IOException {
         this.buffer = buffer;
-        datos  = new byte[LONGITUD_MAX];
+
+        desmontar();
     }
 
 
@@ -69,9 +76,5 @@ public class DATA implements TFTP {
         in.readShort();     // Ignorar opcode
         bloque = in.readShort();
         datos = leerDatos(in);
-    }
-
-    public void actualizar() {
-        bloque++;
     }
 }

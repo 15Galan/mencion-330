@@ -13,17 +13,18 @@ public class RRQ implements TFTP {
     private String modo;
 
 
-    public RRQ() {
-        this(null, "octet");
-    }
-
-    public RRQ(String fichero, String modo) {
+    // Constructores
+    public RRQ(String fichero, String modo) throws IOException {
         this.fichero = fichero;
         this.modo = modo;
+
+        montar();
     }
 
-    public RRQ(byte[] buffer) {
+    public RRQ(byte[] buffer) throws IOException {
         this.buffer = buffer;
+
+        desmontar();
     }
 
 

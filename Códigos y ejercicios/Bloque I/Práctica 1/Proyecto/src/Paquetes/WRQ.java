@@ -13,17 +13,18 @@ public class WRQ implements TFTP {
     private String modo;
 
 
-    public WRQ() {
-        this(null, "octet");
-    }
-
-    public WRQ(String fichero, String modo) {
+    // Constructores
+    public WRQ(String fichero, String modo) throws IOException {
         this.fichero = fichero;
         this.modo = modo;
+
+        montar();
     }
 
-    public WRQ(byte[] buffer) {
+    public WRQ(byte[] buffer) throws IOException {
         this.buffer = buffer;
+
+        desmontar();
     }
 
 
