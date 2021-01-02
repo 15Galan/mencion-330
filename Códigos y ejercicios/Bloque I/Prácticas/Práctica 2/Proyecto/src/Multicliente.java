@@ -21,15 +21,19 @@ public class Multicliente {
     private static Selector selector;               // Selector del servidor
     private static int puerto;                      // Puerto del servidor
 
+    // Datos
+    private static int usuarios = 0;
+
 
     public static void main(String[] args) throws IOException {
         comprobarArgumentos(args);
 
         inicializarServidor();
 
-        System.out.println("\nEsperando conexiones...\n");
+        System.out.println("\nEsperando conexiones...");
+        System.out.println("----------------------------------------------------------------");
 
-        while(true){
+        do {
             selector.select();
 
             Set<SelectionKey> canales = selector.selectedKeys();
@@ -46,11 +50,15 @@ public class Multicliente {
                     leerCliente(canal);
                 }
             }
-        }
 
-        // selector.close();
+        } while (usuarios > 0);
 
-        // System.out.println("\nServidor cerrado.");
+        System.out.println("----------------------------------------------------------------");
+        System.out.println("No hay usuarios conectados, fin del servicio.");
+
+        selector.close();
+
+        System.out.println("\nServidor cerrado.");
     }
 
 
@@ -116,7 +124,8 @@ public class Multicliente {
     private static void aceptarCliente() throws IOException {
         SocketChannel socketCliente = servidor.accept();    // Aceptar una conexión entrante
 
-        System.out.println("'" + info(socketCliente) + "' se ha conectado.");   // Informar de una nueva conexión
+        System.out.println("['" + info(socketCliente) + "' se ha conectado]");     // Informar de una nueva conexión
+        System.out.println("Hay un total de (" + (++usuarios) + ") usuarios conectados.");
 
         socketCliente.configureBlocking(false);     // Establecer una lectura no bloqueante (servidor)
 
@@ -165,7 +174,8 @@ public class Multicliente {
             canal.cancel();
             socketCliente.close();
 
-            System.out.println("'" + info(socketCliente) + "' se ha desconectado.");   // Informar de una nueva conexión
+            System.out.println("['" + info(socketCliente) + "' se ha desconectado]");   // Informar de una nueva conexión
+            System.out.println("Hay un total de (" + (--usuarios) + ") usuarios conectados.");
         }
     }
 
@@ -190,10 +200,10 @@ public class Multicliente {
                 // Asignar el nuevo buffer con el tamaño exacto
                 bufferCliente = ByteBuffer.wrap(construirMensaje(canal, datos));
 
-                // Enviar el mensaje con la estructura '<cliente> -> <mensaje>'
+                // Enviar el mensaje
                 cliente.write(bufferCliente);
 
-                // Mensaje con espacios 'tab' para mejorar la visión en la consola
+                // Mostrar el mensaje con espacios para mejorar la visión en la consola
                 System.out.println("\t\tEnviado a '" + info(cliente) + "'.");
 
                 if (!bufferCliente.hasRemaining()) {            // Fin de la operacion de escritura.
@@ -203,6 +213,8 @@ public class Multicliente {
                 bufferCliente.compact();      // Hacer sitio para leer mas datos.
             }
         }
+
+        System.out.println(/* Separar secuencia de broadcast. */);
     }
 
     /**
