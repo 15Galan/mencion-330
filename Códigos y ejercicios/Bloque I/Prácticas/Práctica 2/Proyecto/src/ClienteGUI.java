@@ -1,4 +1,4 @@
-/**
+/*
  * Práctica 2
  *
  * @author Antonio J. Galán Herrera
@@ -54,7 +54,7 @@ public class ClienteGUI {
             puerto = Integer.parseInt(argumentos[1]);
 
         } else {
-            System.err.println("No se encontraron parámetros para la clase.");
+            System.out.println("No se encontraron parámetros para la clase.");
 
             // Asignación manual
             Scanner sc = new Scanner(System.in);
