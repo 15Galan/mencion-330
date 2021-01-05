@@ -1,0 +1,45 @@
+esto va en el index.html
+
+
+<html>
+    <head>
+        
+        <title> prueba ajax</title>
+    </head>
+    <body>
+
+        <script
+            type="text/javascript" src="fichero_jav_script_ajax.js">
+        </script>
+
+<h2>The XMLHttpRequest Object esto es una prueba</h2>
+
+<p id="demo">Let AJAX change this text.</p>
+
+<button type="button" onclick="loadDoc()">Change Content</button>
+
+</body>
+</html>
+
+esto va en el fichero .js
+
+function loadDoc() {
+
+  // lo pongo así si  no hago refencia a navegadores distintos    var xhttp = new XMLHttpRequest();
+ var xhttp;// lo pongo así y dependiendo de navegadores asi inicializo
+    if (window.XMLHttpRequest) {
+    // code for modern browsers
+    xhttp = new XMLHttpRequest();
+    } else {
+    // code for IE6, IE5
+    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+ // xhttp.open("GET", "ajax_info.txt", true);
+  xhttp.open("GET", "pagina_envio_prueba.html", true);
+  xhttp.send();
+}

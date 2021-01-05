@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      function validateForm() {
+        mensaje='';
+        flag_ok=true;
+        var x = document.forms["myForm"]["fname"].value;
+
+        if (x == "") {
+          mensaje = mensaje + "Nombre no puede estar vacio \n";
+          flag_ok = false;
+        }
+
+        var x = document.forms["myForm"]["fapellido"].value;
+
+        if (x == "") {
+          mensaje = mensaje + "apellido no puede estar vacio \n";
+          flag_ok = false;
+        }
+
+        if (flag_ok == false) {
+          alert(mensaje);
+          return false;
+        } else {
+          return true;
+        }
+
+    </script>
+  </head>
+
+  <body>
+    <form name="myForm" action="/action_page.php" onsubmit="return validateForm()" method="post">
+          Name: <input type="text" name="fname">
+          Apellido: <input type="text" name="fapellido">
+          
+          <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>

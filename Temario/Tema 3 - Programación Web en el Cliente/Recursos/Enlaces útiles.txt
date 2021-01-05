@@ -1,0 +1,3 @@
+Documento estándar de Hojas de Estilo (CSS): https://www.w3.org/TR/CSS2/
+Document Object Model (DOM): https://www.w3.org/TR/DOM-Level-3-Events/
+Métodos de Javascrip Document: https://developer.mozilla.org/en-US/docs/Web/API/document
