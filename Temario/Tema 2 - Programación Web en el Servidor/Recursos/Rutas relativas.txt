@@ -1,0 +1,24 @@
+Debéis tener en cuenta las siguientes rutas que son distintas:
+
+1 - La ruta donde ponéis los fuentes de vuestro proyecto.
+2 - La ruta de la aplicación Glassfish, servidor utilizado...
+3 - La ruta a partir de la que se ponen los archivos una vez que se genera el proyecto.
+
+Esta última es la que tenéis que tener en cuenta para poner las rutas relativas. En Netbeans la podéis ver en Herramientas->Servidores.
+
+Ejemplo:
+
+Servidor1:
+    Domain Folder: c:\ruta_del_servidor
+    Domain: dominio1
+
+    Ruta Absoluta: C:\ruta_del_servidor\dominio1
+
+
+Con la siguiente instrucción java podéis ver cual es el directorio donde se esta ejecutando una aplicación.
+String directorio_de_ejecucion_de_la_aplicacion = new java.io.File( "." ).getCanonicalPath();
+
+Si queremos tener una carpeta "ficheros” y dentro un fichero "usuarios.txt”, la ruta absoluta y la ruta relativa serían las siguientes
+
+    Ruta absoluta: C:\ruta_del_servidor\dominio1\ficheros\usuarios.txt
+    Ruta relativa: ../ficheros/usuarios.txt

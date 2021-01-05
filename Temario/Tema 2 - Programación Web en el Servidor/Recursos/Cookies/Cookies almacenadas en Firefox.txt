@@ -1,0 +1,9 @@
+Podemos ver la base de datos de las cookies de firefox con la aplicación que os podéis descargar de la siguiente URL
+
+https://portableapps.com/apps/development/sqlite_database_browser_portable
+
+La base de datos de las cookies se ubíca dentro de cada perfil de firefox. Podeis encontrar el vuestro en:
+
+%APPDATA%\Mozilla\Firefox\Profiles\
+
+Ejemplo: C:\Users\Galán\AppData\Roaming\Mozilla\Firefox\Profiles\y9c1oewg.default-1496694545361\cookies.sqite

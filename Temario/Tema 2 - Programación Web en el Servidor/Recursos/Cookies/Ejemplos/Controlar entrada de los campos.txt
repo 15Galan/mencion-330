@@ -1,0 +1,2 @@
+<input type="text" maxlength="5" />
+<input type="text" name="coche" required pattern="A|a(1|3|4|15)" title="Modelos posibles: A1, A3, A4 y A15">
