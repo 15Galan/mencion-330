@@ -1,0 +1,37 @@
+1.  Arrancar el servidor en la IP 'localhost' y un puerto.
+2.  Arrancar el cliente en la IP 'localhost' y el mismo puerto.
+
+3.  Conéctate al servidor desde el cliente usando los datos anteriores.
+
+    'connect localhost 5555'
+
+4.  Para enviar cualquier archivo de tu ordenador necesitarás
+    saber su ruta absoluta. Si usas una ruta relativa, recuerda
+    que sería depende de la ubicación de este proyecto en tu equipo,
+    así que te recomiendo usar la ruta absoluta para evitar problemas.
+
+    'put C:\Users\Galán\Desktop\Pruebas\README.md'
+
+    Los ficheros enviados se guardan en la carpeta 'Archivos/Servidor'
+    del proyecto, por eso mi archivo 'README.md' ya está ahí.
+
+5.  En el cliente, elige cualquier archivo de la carpeta anterior
+    para descargarlo. Como el archivo está en el servidor, no uses
+    una ruta, sino su nombre.
+
+    'get MyOctocat.js'
+
+    En esta ocasión no he ejecutado el comando, así que si lo ejecutas
+    por mí, verás que en la carpeta 'Archivos/Cliente' se ha descargado.
+
+6.  Cuando te aburras de enviar y descargar archivos, puedes apagar el
+    cliente con el comando de salida. Esto finalizará el proceso.
+
+    'quit'
+
+
+NOTAS:  Si tienes varios ordenadores o máquinas virtuales, puedes usar el
+        servidor con las distintas IPs de los dispositivos, ya que estarían
+        dentro de la misma red.
+
+        Como se intercambian bytes, puede usarse cualquier tipo de archivo.
