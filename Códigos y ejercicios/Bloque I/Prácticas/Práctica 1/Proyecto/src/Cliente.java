@@ -229,7 +229,7 @@ public class Cliente {
 
                 ACK confirmacion = new ACK(paquete.getData());
 
-                cmd.escribir("<----------------  ACK " + confirmacion.getBloque());
+                cmd.escribir("\t\t\t\t<--------  ACK " + confirmacion.getBloque());
 
                 // Crear un DATA para el trozo
                 DATA datos = new DATA(Funciones.crearParticion(lector), confirmacion.getBloque() + 1);
@@ -248,7 +248,7 @@ public class Cliente {
 
             ACK confirmacion = new ACK(paquete.getData());
 
-            cmd.escribir("<----------------  ACK " + confirmacion.getBloque());
+            cmd.escribir("\t\t\t\t<--------  ACK " + confirmacion.getBloque());
             cmd.escribir("Fichero enviado sin errores");
 
         }  catch (IOException e) {
@@ -271,7 +271,7 @@ public class Cliente {
             // Guardar los datos
             DATA datos = new DATA(paquete.getData());
 
-            cmd.escribir("<----------------  DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")");
+            cmd.escribir("\t\t<--------  DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")");
 
             // Añadir la partición al contenido del fichero
             contenido = Funciones.agregar(contenido, datos.getDatos());

@@ -98,8 +98,8 @@ public class Servidor {
 
         try {
             switch (opcode) {
-                case 1 -> accionRRQ(buffer);
-                case 2 -> accionWRQ(buffer);
+                case 1 -> iniciarTransaccionRRQ(buffer);
+                case 2 -> iniciarTransaccionWRQ(buffer);
                 default -> System.err.println("Error al leer el OPCODE '" + opcode + "'.");
             }
 
@@ -115,15 +115,13 @@ public class Servidor {
      *
      * @throws IOException  La transacción ha fallado
      */
-    public static void accionRRQ(byte[] buffer) throws IOException {
-        System.out.println("Petición RRQ recibida.");
-
+    public static void iniciarTransaccionRRQ(byte[] buffer) throws IOException {
         // Extraer la información del paquete recibido
         RRQ rrq = new RRQ(buffer);
 
         File fichero = new File("src/Archivos/Servidor/" + rrq.getFichero());
 
-        System.out.println("Se quiere leer el fichero: " + fichero.getName() + ".");
+        System.out.println("Petición RRQ recibida para descargar el fichero: " + fichero.getName() + ".");
 
         // Comprobar que existe el archivo
         if (fichero.exists()) {
@@ -133,6 +131,8 @@ public class Servidor {
 
         } else {
             System.out.println("El fichero no existe.");
+
+            // TODO - Enviar ERROR[ 7 , "Fichero no existe" ]
         }
 
     }
@@ -144,7 +144,7 @@ public class Servidor {
      *
      * @throws IOException  La transacción ha fallado
      */
-    public static void accionWRQ(byte[] buffer) throws IOException {
+    public static void iniciarTransaccionWRQ(byte[] buffer) throws IOException {
         System.out.println("Petición WRQ recibida.");
 
         byte[] contenido;     // Contenido del fichero que se recibe
@@ -157,10 +157,10 @@ public class Servidor {
 
         // Se escribe el fichero
         if (Funciones.escribirFichero(contenido, new File("src/Archivos/Servidor/" + peticion.getFichero()))) {
-            System.out.println("\tFichero enviado.");
+            System.out.println("Fichero enviado.\n");
 
         } else {
-            System.out.println("\tFallo al enviar el fichero.");
+            System.out.println("Fallo al enviar el fichero.");
         }
     }
 
@@ -179,7 +179,7 @@ public class Servidor {
         DATA datos = new DATA(Funciones.crearParticion(lector), 1);
         socket.send(new DatagramPacket(datos.buffer, datos.buffer.length, direccion, puerto));
 
-        System.out.println("\tEnviado DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")");
+        System.out.println("\tDATA " + datos.getBloque() + " (" + datos.getDatos().length + ")  ========>");
 
         do {
             // Recibir ACK (n)
@@ -189,7 +189,7 @@ public class Servidor {
             // Guardar datos del ACK (n)
             ACK confirmacion = new ACK(paquete.getData());
 
-            System.out.println("\tRecibido ACK " + confirmacion.getBloque());
+            System.out.println("\t\t\t\t   <========  ACK " + confirmacion.getBloque());
 
             if (datos.getDatos().length == TFTP.LONGITUD_MAX) {
                 // Crear (actualizar) y enviar el DATA (n)
@@ -199,13 +199,15 @@ public class Servidor {
 
                 socket.send(new DatagramPacket(datos.buffer, datos.buffer.length, direccion, puerto));
 
+                System.out.println("\tDATA " + datos.getBloque() + " (" + datos.getDatos().length + ")  ========>");
+
             } else if (datos.getBloque() == confirmacion.getBloque()) {
                 terminar = true;
             }
 
         } while (!terminar);
 
-        System.out.println("Fichero enviado.");
+        System.out.println("Fichero enviado.\n");
     }
 
     /**
@@ -229,7 +231,7 @@ public class Servidor {
             // Guardar los datos
             DATA datos = new DATA(paquete.getData());
 
-            System.out.println("\tRecibido DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")");
+            System.out.println("\t\t\t<========  DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")");
 
             // Añadir la partición al contenido del fichero
             contenido = Funciones.agregar(contenido, datos.getDatos());
@@ -241,6 +243,8 @@ public class Servidor {
             // Crear y enviar el ACK (n)
             ACK confirmacion = new ACK(datos.getBloque());
             socket.send(new DatagramPacket(confirmacion.buffer, confirmacion.buffer.length, direccion, puerto));
+
+            System.out.println("\tACK " + confirmacion.getBloque() + "  ========>");
 
         } while (!terminar);
 
