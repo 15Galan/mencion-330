@@ -221,6 +221,8 @@ public class Cliente {
      * @param archivo   Fichero que enviar
      */
     private static void intercambioWRQ(File archivo) {
+        boolean seguir = true;
+
         try (FileInputStream lector = new FileInputStream(archivo)) {
             do {
                 // Recibir ACK del servidor
@@ -240,7 +242,14 @@ public class Cliente {
 
                 cmd.escribir("DATA " + datos.getBloque() + " (" + datos.getDatos().length + ")  -------->");
 
-            } while (lector.available() > 0);
+                if (lector.available() == 0 && datos.getDatos().length == 0) {
+                    seguir = false;
+
+                } else if (lector.available() == 0 && datos.getDatos().length < 512) {
+                    seguir = false;
+                }
+
+            } while (seguir);
 
             // Recibir el último ACK del servidor
             DatagramPacket paquete = new DatagramPacket(new byte[RECEPCION_MAX], RECEPCION_MAX, direccion, puerto);

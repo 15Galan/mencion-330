@@ -30,19 +30,23 @@ public class Funciones {
     /**
      * Lee 512 bytes (o menos) de un flujo de datos y los almacena en un array
      * con la dimensión de los datos leídos, creando una partición de los datos.
+     * Si se leen 0 bytes (partición múltiplo de 512) crea una partición vacía.
      *
      * @param lector    Flujo de salida de datos del que crear la partición
      *
-     * @return      Partición en forma de array de bytes
+     * @return      Partición en forma de array de bytes de entre 0 y 512 bytes
      *
      * @throws IOException  Hubo un problema al leer los datos
      */
     public static byte[] crearParticion(FileInputStream lector) throws IOException {
-        byte[] particion = new byte[TFTP.LONGITUD_MAX];
+        byte[] particion =  new byte[TFTP.LONGITUD_MAX];
         int leido = lector.read(particion);     // Escribir en la partición
 
         // Ajustar la partición si se leen menos
-        if (leido < TFTP.LONGITUD_MAX) {
+        if (leido == -1) {
+            particion = new byte[0];
+
+        } else if (leido < TFTP.LONGITUD_MAX) {
             byte[] aux = new byte[leido];
 
             System.arraycopy(particion, 0, aux, 0, leido);

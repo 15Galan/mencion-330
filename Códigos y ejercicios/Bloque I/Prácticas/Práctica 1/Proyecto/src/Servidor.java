@@ -157,10 +157,10 @@ public class Servidor {
 
         // Se escribe el fichero
         if (Funciones.escribirFichero(contenido, new File("src/Archivos/Servidor/" + peticion.getFichero()))) {
-            System.out.println("Fichero enviado.\n");
+            System.out.println("Fichero recibido.\n");
 
         } else {
-            System.out.println("Fallo al enviar el fichero.");
+            System.out.println("Fallo al recibir el fichero.");
         }
     }
 
