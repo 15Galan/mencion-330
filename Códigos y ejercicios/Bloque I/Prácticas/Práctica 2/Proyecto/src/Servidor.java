@@ -1,7 +1,7 @@
 /*
  * Práctica 2
  *
- * @author Antonio J. Galán Herrera
+ * Antonio J. Galán Herrera
  */
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.nio.channels.SocketChannel;
 import java.util.Scanner;
 import java.util.Set;
 
-public class Multicliente {
+public class Servidor {
 
     // Conexión
     private static ServerSocketChannel servidor;    // Socket para el Selector
@@ -22,7 +22,7 @@ public class Multicliente {
     private static int puerto;                      // Puerto del servidor
 
     // Datos
-    private static int usuarios = 0;
+    private static int usuarios = 0;        // Número de usuarios conectados al servidor
 
 
     public static void main(String[] args) throws IOException {

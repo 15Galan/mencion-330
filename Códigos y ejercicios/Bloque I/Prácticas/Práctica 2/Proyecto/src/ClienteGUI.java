@@ -1,7 +1,7 @@
 /*
  * Práctica 2
  *
- * @author Antonio J. Galán Herrera
+ * Antonio J. Galán Herrera
  */
 
 import javax.swing.*;
