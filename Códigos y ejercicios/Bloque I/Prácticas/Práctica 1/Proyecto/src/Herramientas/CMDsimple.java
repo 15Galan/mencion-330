@@ -1,5 +1,15 @@
 package Herramientas;
 
+/*
+ * Universidad de Málaga
+ * E.T.S Ingeniería Informática
+ *
+ * Desarrollo de Servicios Telemáticos
+ * Práctica 1: Servidor y cliente TFTP
+ *
+ * Antonio J. Galán Herrera
+ */
+
 import java.util.Scanner;
 
 public class CMDsimple {
