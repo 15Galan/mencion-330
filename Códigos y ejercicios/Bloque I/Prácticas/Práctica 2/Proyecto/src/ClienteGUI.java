@@ -1,5 +1,9 @@
 /*
- * Práctica 2
+ * Universidad de Málaga
+ * E.T.S Ingeniería Informática
+ *
+ * Desarrollo de Servicios Telemáticos
+ * Práctica 2: Chat multicliente con Selector / NIO
  *
  * Antonio J. Galán Herrera
  */
