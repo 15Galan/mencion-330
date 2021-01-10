@@ -125,13 +125,13 @@ public class Servidor {
      *
      * @throws IOException  La transacción ha fallado
      */
-    public static void iniciarTransaccionRRQ(byte[] buffer) throws IOException {
+    private static void iniciarTransaccionRRQ(byte[] buffer) throws IOException {
         // Extraer la información del paquete recibido
         RRQ rrq = new RRQ(buffer);
 
         File fichero = new File("src/Archivos/Servidor/" + rrq.getFichero());
 
-        System.out.println("Petición RRQ recibida para descargar el fichero: " + fichero.getName() + ".");
+        System.out.println("Petición RRQ: enviar el fichero: " + fichero.getName() + ".");
 
         // Comprobar que existe el archivo
         if (fichero.exists()) {
@@ -154,13 +154,13 @@ public class Servidor {
      *
      * @throws IOException  La transacción ha fallado
      */
-    public static void iniciarTransaccionWRQ(byte[] buffer) throws IOException {
-        System.out.println("Petición WRQ recibida.");
-
+    private static void iniciarTransaccionWRQ(byte[] buffer) throws IOException {
         byte[] contenido;     // Contenido del fichero que se recibe
 
         // Se extrae la información del paquete recibido
         WRQ peticion = new WRQ(buffer);
+
+        System.out.println("Petición WRQ: recibir el fichero: " + peticion.getFichero() + ".");
 
         // Cruces de ACKs y DATAs
         contenido = intercambioWRQ();
