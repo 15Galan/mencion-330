@@ -1,4 +1,4 @@
-1.  Arrancar el servidor en la IP 'localhost' y un puerto.
+1.  Arrancar el servidor y alojarlo sobre un puerto concreto.
 2.  Arrancar el cliente en la IP 'localhost' y el mismo puerto.
 
 3.  Conéctate al servidor desde el cliente usando los datos anteriores.
@@ -7,7 +7,7 @@
 
 4.  Para enviar cualquier archivo de tu ordenador necesitarás
     saber su ruta absoluta. Si usas una ruta relativa, recuerda
-    que sería depende de la ubicación de este proyecto en tu equipo,
+    que depende de la ubicación de este proyecto en tu equipo,
     así que te recomiendo usar la ruta absoluta para evitar problemas.
 
     'put C:\Users\Galán\Desktop\Pruebas\README.md'
