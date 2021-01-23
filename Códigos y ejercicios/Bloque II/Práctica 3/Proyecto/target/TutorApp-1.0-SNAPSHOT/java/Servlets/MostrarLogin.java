@@ -171,9 +171,9 @@ public class MostrarLogin extends HttpServlet {
             escritor = new PrintWriter(fichero);
 
             for (int i = 1; i <= 3; i++) {
-                escritor.println("Titulo " + i);
-                escritor.println("Descripcion");
-                escritor.println("preguntas...");
+                escritor.print("Titulo" + i + "\r\n");
+                escritor.print("Descripción" + i + "\r\n");
+                escritor.println("preguntas..." + i + "\r\n");
             }
 
             escritor.close();
