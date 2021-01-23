@@ -6,7 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 
-@WebServlet(name = "Servlets.Examen.Estadisticas", urlPatterns = {"/Servlets.Examen.Estadisticas"})
+@WebServlet(name = "Servlets.Examenes.Estadisticas", urlPatterns = {"/Servlets.Examenes.Estadisticas"})
 public class Estadisticas extends HttpServlet {
 
     @Override
@@ -31,7 +31,7 @@ public class Estadisticas extends HttpServlet {
                 "    <title>Estadísticas</title>\n" +
                 "  </head>\n" +
                 "  <body>\n" +
-                "    <a href=Servlets.PerfilUsuario> Volver al perfil </a><br>" +       // REDIRECCIÓN
+                "    <a href=Servlets.PaginaUsuario> Volver al perfil </a><br>" +       // REDIRECCIÓN
                 "  </body>\n" +
                 "</html>");
     }

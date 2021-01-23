@@ -60,7 +60,7 @@ public class Registro extends HttpServlet {
 //        escritor.println("<body text=\"#000000\" bgcolor=\"#ffffff\">");
 //
 //        // Inicio del formulario
-//        escritor.println("<form method=\"POST\" action=\"Servlets.ProcesoRegistro\">");
+//        escritor.println("<form method=\"POST\" action=\"Servlets.Proceso.Registro\">");
 //
 //        escritor.println("<h1 align=\"center\"> Registro en el Sistema Tutor </h1>");
 //        escritor.println("<h1 align=\"center\"> Introduzca usuario y contraseña </h1>");
@@ -125,7 +125,7 @@ public class Registro extends HttpServlet {
         escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
                 "  <head>\n" +
                 "    <meta charset=\"utf-8\">\n" +
-                "    <title>Nuevo Examen</title>\n" +
+                "    <title>Nuevo Examenes</title>\n" +
                 "  </head>\n" +
                 "  <body>\n" +
                 "    <a href=Servlets.PaginaPrincipal> Fin del registro </a><br>" +       // REDIRECCIÓN

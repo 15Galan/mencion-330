@@ -46,18 +46,18 @@ public class PaginaPrincipal extends HttpServlet {
 //            + "<input type=\"submit\" name=\"send\" value =\"BUSCAR\"> </form>");
 //        escritor.println("<a href=Servlets.MostrarLogin> Login </a><br>");          // REDIRECCIÓN
 //        escritor.println("<a href=Servlets.Registro> Registro </a><br>");           // REDIRECCIÓN
-//        escritor.println("<a href=Servlets.PerfilUsuario> Auxiliar </a><br>");      // REDIRECCIÓN (AUX)
+//        escritor.println("<a href=Servlets.PaginaUsuario> Auxiliar </a><br>");      // REDIRECCIÓN (AUX)
 //        escritor.println("</body></html>");
 
         escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
                 "  <head>\n" +
                 "    <meta charset=\"utf-8\">\n" +
-                "    <title>Nuevo Examen</title>\n" +
+                "    <title>Nuevo Examenes</title>\n" +
                 "  </head>\n" +
                 "  <body>\n" +
                 "    <a href=Servlets.MostrarLogin> Login </a><br>" +          // REDIRECCIÓN
                 "    <a href=Servlets.Registro> Registro </a><br>" +           // REDIRECCIÓN
-                "    <a href=Servlets.PerfilUsuario> Auxiliar </a><br>" +      // REDIRECCIÓN (AUX)
+                "    <a href=Servlets.PaginaUsuario> Auxiliar </a><br>" +      // REDIRECCIÓN (AUX)
                 "  </body>\n" +
                 "</html>");
 

@@ -1,4 +1,6 @@
-package Funciones;/* @author  Lidia Fuentes
+package Funciones;
+
+/* @author  Lidia Fuentes
  * @editor  Antonio J. Galán Herrera
  */
 
@@ -7,7 +9,7 @@ import javax.servlet.http.*;
 
 public final class LoginManager {
 
-    private final static String ATRIBUTO_USUARIO ="loginName";
+    private final static String ATRIBUTO_USUARIO = "loginName";
 
     private LoginManager() {
 

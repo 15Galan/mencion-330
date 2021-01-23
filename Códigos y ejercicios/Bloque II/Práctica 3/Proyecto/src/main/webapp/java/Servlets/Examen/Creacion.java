@@ -1,5 +1,8 @@
 package Servlets.Examen;
 
+
+import Funciones.Examen;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -8,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet(name = "Servlets.Examen.Examen", urlPatterns = {"/Servlets.Examen.Examen"})
-public class Examen extends HttpServlet {
+@WebServlet(name = "Servlets.Examenes.Creacion", urlPatterns = {"/Servlets.Examenes.Creacion"})
+public class Creacion extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
@@ -31,10 +34,10 @@ public class Examen extends HttpServlet {
         escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
         "  <head>\n" +
         "    <meta charset=\"utf-8\">\n" +
-        "    <title>Nuevo Examen</title>\n" +
+        "    <title>Nuevo Examenes</title>\n" +
         "  </head>\n" +
         "  <body>\n" +
-        "    <a href=Servlets.PerfilUsuario> Crear </a><br>" +     // REDIRECCIÓN
+        "    <a href=Servlets.PaginaUsuario> Crear </a><br>" +     // REDIRECCIÓN
         "  </body>\n" +
         "</html>");
     }

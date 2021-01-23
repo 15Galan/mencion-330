@@ -1,9 +1,10 @@
-package Servlets;/* @author  Lidia Fuentes
+package Servlets.Proceso;
+
+/* @author  Lidia Fuentes
  * @editor  Antonio J. Galán Herrera
  */
 
 import Funciones.LoginManager;
-
 
 import java.io.*;
 import java.util.HashMap;
@@ -13,8 +14,8 @@ import javax.servlet.http.*;
 import javax.servlet.ServletException;
 
 
-@WebServlet (name ="Servlets.ProcesoLogin", urlPatterns = {"/Servlets.ProcesoLogin"})
-public class ProcesoLogin extends HttpServlet {
+@WebServlet (name ="Servlets.Proceso.Login", urlPatterns = {"/Servlets.Proceso.Login"})
+public class Login extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request,HttpServletResponse response) throws IOException, ServletException {
@@ -26,7 +27,7 @@ public class ProcesoLogin extends HttpServlet {
         String loginName = peticion.getParameter("loginName");
 
         if (loginName == null || loginName.trim().length() == 0) {
-            Map errors = new HashMap();
+            Map<String, String> errors = new HashMap();
 
             errors.put("loginName", "Mandatory field");
             peticion.setAttribute("errors", errors);
@@ -34,7 +35,7 @@ public class ProcesoLogin extends HttpServlet {
 
         } else {
             LoginManager.login(peticion, loginName.trim());
-            respuesta.sendRedirect("Servlets.PerfilUsuario");
+            respuesta.sendRedirect("Servlets.PaginaUsuario");
         }
     }
 

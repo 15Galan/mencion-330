@@ -6,12 +6,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 
-@WebServlet(name = "Servlets.Examen.Seleccion", urlPatterns = {"/Servlets.Examen.Seleccion"})
+@WebServlet(name = "Servlets.Examenes.Seleccion", urlPatterns = {"/Servlets.Examenes.Seleccion"})
 public class Seleccion extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
         generarPagina(respuesta);
+
+        peticion.getAttribute();
     }
 
     @Override
@@ -29,10 +31,10 @@ public class Seleccion extends HttpServlet {
         escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
                 "  <head>\n" +
                 "    <meta charset=\"utf-8\">\n" +
-                "    <title>Examen Seleccionado</title>\n" +
+                "    <title>Examenes Seleccionado</title>\n" +
                 "  </head>\n" +
                 "  <body>\n" +
-                "    <a href=Servlets.Examen.Pregunta> Comenzar </a><br>" +     // REDIRECCIÓN
+                "    <a href=Servlets.Examenes.Pregunta> Comenzar </a><br>" +     // REDIRECCIÓN
                 "  </body>\n" +
                 "</html>");
     }

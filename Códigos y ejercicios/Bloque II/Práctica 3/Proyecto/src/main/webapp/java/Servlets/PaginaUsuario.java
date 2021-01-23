@@ -1,6 +1,10 @@
-package Servlets;/* @author  Lidia Fuentes
+package Servlets;
+
+/* @author  Lidia Fuentes
  * @editor  Antonio J. Galán Herrera
  */
+
+import Funciones.Examen;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,14 +13,14 @@ import javax.servlet.http.*;
 import javax.servlet.ServletException;
 
 
-@WebServlet (name = "Servlets.PerfilUsuario", urlPatterns = {"/Servlets.PerfilUsuario"})
-public class PerfilUsuario extends HttpServlet {
+@WebServlet (name = "Servlets.PaginaUsuario", urlPatterns = {"/Servlets.PaginaUsuario"})
+public class PaginaUsuario extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
         generarPagina(respuesta, peticion.getParameter("loginName"));
 
-        // respuesta.sendRedirect("Servlets.PerfilUsuario");
+        // respuesta.sendRedirect("Servlets.PaginaUsuario");
     }
 
     @Override
@@ -27,6 +31,8 @@ public class PerfilUsuario extends HttpServlet {
 
     // Métodos propios
     private void generarPagina(HttpServletResponse respuesta, String usuario) throws IOException {
+        Examen incial = new Examen("Inicial", "Test generado en el arranque");
+
         respuesta.setContentType("text/html; charset=ISO-8859-1");
 
         PrintWriter escritor = respuesta.getWriter();
@@ -45,18 +51,18 @@ public class PerfilUsuario extends HttpServlet {
 //            + "<option>Autor\n</select>"
 //            + "<input type=\"text\" name=\"patronus\" value=\"\" required> "
 //            + "<input type=\"submit\" name=\"send\" value =\"BUSCAR\"> </form>");
-//        escritor.println("<a href=Servlets.Examen.Examen> Generar TEST </a><br>");      //  REDIRECCIÓN
-//        escritor.println("<a href=Servlets.Examen.Seleccion> Elegir TEST </a><br>");    // REDIRECCIÓN
+//        escritor.println("<a href=Servlets.Examenes.Examenes> Generar TEST </a><br>");    // REDIRECCIÓN
+//        escritor.println("<a href=Servlets.Examenes.Seleccion> Elegir TEST </a><br>");    // REDIRECCIÓN
 //        escritor.println("</body></html>");
 
         escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
                 "  <head>\n" +
                 "    <meta charset=\"utf-8\">\n" +
-                "    <title>Nuevo Examen</title>\n" +
+                "    <title>Nuevo Examenes</title>\n" +
                 "  </head>\n" +
                 "  <body>\n" +
-                "    <a href=Servlets.Examen.Examen> Generar TEST </a><br>" +       // REDIRECCIÓN
-                "    <a href=Servlets.Examen.Seleccion> Elegir TEST </a><br>" +     // REDIRECCIÓN
+                "    <a href=Servlets.Examenes.Examenes> Generar TEST </a><br>" +   // REDIRECCIÓN
+                "    <a href=Servlets.Examenes.Seleccion> Elegir TEST </a><br>" +   // REDIRECCIÓN
                 "  </body>\n" +
                 "</html>");
 

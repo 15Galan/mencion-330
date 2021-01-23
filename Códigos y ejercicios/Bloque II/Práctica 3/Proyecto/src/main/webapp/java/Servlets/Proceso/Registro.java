@@ -1,4 +1,4 @@
-package Servlets;
+package Servlets.Proceso;
 
 /* @author  Lidia Fuentes
  * @editor  Antonio J. Galán Herrera
@@ -13,8 +13,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.ServletException;
 
 
-@WebServlet(name = "Servlets.ProcesoRegistro", urlPatterns = {"/Servlets.ProcesoRegistro"})
-public class ProcesoRegistro extends HttpServlet {
+@WebServlet(name = "Servlets.Proceso.Registro", urlPatterns = {"/Servlets.Proceso.Registro"})
+public class Registro extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException, ServletException {
@@ -75,7 +75,7 @@ public class ProcesoRegistro extends HttpServlet {
             escritor.println(usuario + " " + contra);
             escritor.close();
 
-            respuesta.sendRedirect("Servlets.PerfilUsuario");
+            respuesta.sendRedirect("Servlets.PaginaUsuario");
         }
     }
 
@@ -86,6 +86,6 @@ public class ProcesoRegistro extends HttpServlet {
     }
 
     private void forwardToShowMenu(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        this.getServletContext().getRequestDispatcher("/Servlets.PerfilUsuario").forward(request, response);
+        this.getServletContext().getRequestDispatcher("/Servlets.PaginaUsuario").forward(request, response);
     }
 }

@@ -60,8 +60,8 @@ public class MostrarLogin extends HttpServlet {
 //        escritor.println("<body text=\"#000000\" bgcolor=\"#ffffff\">");
 //
 //        /* Inicio del form. */
-//        escritor.println("<form method=\"POST\" action=\"Servlets.ProcesoLogin\">");
-//        escritor.println("<form method=\"POST\" action=\"Servlets.ProcesoLogin\">");
+//        escritor.println("<form method=\"POST\" action=\"Servlets.Proceso.Login\">");
+//        escritor.println("<form method=\"POST\" action=\"Servlets.Proceso.Login\">");
 //        escritor.println("<h1 align=\"center\"> Biblioteca Pública María Moliner </h1>");
 //        escritor.println("<h1 align=\"center\"> Como la del diccionario de uso de la lengua. </h1>");
 //

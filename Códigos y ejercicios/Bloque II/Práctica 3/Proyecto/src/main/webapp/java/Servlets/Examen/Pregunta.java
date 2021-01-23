@@ -6,7 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 
-@WebServlet(name = "Servlets.Examen.Pregunta", urlPatterns = {"/Servlets.Examen.Pregunta"})
+@WebServlet(name = "Servlets.Examenes.Pregunta", urlPatterns = {"/Servlets.Examenes.Pregunta"})
 public class Pregunta extends HttpServlet {
 
     @Override
@@ -41,8 +41,8 @@ public class Pregunta extends HttpServlet {
                 "    <p>" +
                 "      <input type=\"submit\" value=\"Enviar datos\">" +
                 "    </p>" +
-                "    <a href=Servlets.Examen.Pregunta> Siguiente pregunta </a><br>" +   // REDIRECCIÓN
-                "    <a href=Servlets.Examen.Estadisticas> Finalizar TEST </a><br>" +   // REDIRECCIÓN
+                "    <a href=Servlets.Examenes.Pregunta> Siguiente pregunta </a><br>" +   // REDIRECCIÓN
+                "    <a href=Servlets.Examenes.Estadisticas> Finalizar TEST </a><br>" +   // REDIRECCIÓN
                 "  </body>\n" +
                 "</html>");
     }
