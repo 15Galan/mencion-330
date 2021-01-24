@@ -1,8 +1,5 @@
 package Servlets.Examen;
 
-
-import Funciones.Examen;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -39,13 +36,15 @@ public class Creacion extends HttpServlet {
         PrintWriter escritor = respuesta.getWriter();
 
         escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
-        "  <head>\n" +
-        "    <meta charset=\"utf-8\">\n" +
-        "    <title>Nuevo Examenes</title>\n" +
-        "  </head>\n" +
-        "  <body>\n" +
-        "    <a href=Servlets.PaginaUsuario> Crear </a><br>" +     // REDIRECCIÓN
-        "  </body>\n" +
-        "</html>");
+            "  <head>\n" +
+            "    <meta charset=\"utf-8\">\n" +
+            "    <title>Nuevo Examenes</title>\n" +
+            "  </head>\n" +
+            "  <body>\n" +
+            "    <a href=Servlets.PaginaUsuario> Crear </a><br>" +     // REDIRECCIÓN
+            "  </body>\n" +
+            "</html>");
+
+        escritor.close();
     }
 }
