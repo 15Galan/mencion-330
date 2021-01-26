@@ -1,5 +1,7 @@
 package Servlets.Examen;
 
+import Funciones.Examen;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -11,8 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "Servlets.Examenes.Creacion", urlPatterns = {"/Servlets.Examenes.Creacion"})
 public class Creacion extends HttpServlet {
 
+    private Examen examen;
+
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
+        examen = new Examen("Nuevo Examen", "Blablabla blablá, bla blabla...");
+
         generarPagina(respuesta);
     }
 
@@ -38,10 +44,16 @@ public class Creacion extends HttpServlet {
         escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
             "  <head>\n" +
             "    <meta charset=\"utf-8\">\n" +
-            "    <title>Nuevo Examenes</title>\n" +
+            "    <title>Nuevo Examen</title>\n" +
             "  </head>\n" +
             "  <body>\n" +
-            "    <a href=Servlets.PaginaUsuario> Crear </a><br>" +     // REDIRECCIÓN
+            "    <p>Examen creado: " + examen.getTitulo() + "</p>\n" +
+            "    <p>Descripción: " + examen.getDescripcion() + "</p>\n" +
+            "    <p>Número de preguntas: " + examen.getPreguntas().size() + "</p>" +
+            "    <form action=\"Servlets.Paginas.Usuario\" method=\"POST\">\n" +
+            "      <input type=\"submit\" href=Servlets.Examenes.Usuario value=\"Volver al perfil\">\n" +
+            "    </form>" +
+//            "    <a href=Servlets.Paginas.Usuario> Volver al perfil </a><br>" +     // REDIRECCIÓN
             "  </body>\n" +
             "</html>");
 

@@ -61,25 +61,21 @@ public class Registro extends HttpServlet {
         // TODO - Limpiar errores
         // Detectar errores
         if (usuario.length() == 0) {
-
             errores.put("loginName", "\tCampo obligatorio");       // Login vacío
             peticion.setAttribute("errors", errores);
             forwardToShowRegister(peticion, respuesta);
 
         } else if (encontrado) {
-
             errores.put("loginName", "\tUsuario ya registrado");   // Usuario ya registrado
             peticion.setAttribute("errors", errores);
             forwardToShowRegister(peticion, respuesta);
 
         } else if (!contra.equals(contra2)) {
-
             errores.put("password", "\tContraseñas diferentes");   // Contraseñas distintas
             peticion.setAttribute("errors", errores);
             forwardToShowRegister(peticion, respuesta);
 
-        } else if (contra == null || contra2 == null || contra.length() == 0 || contra2.length() == 0) {
-
+        } else if (contra == null || contra2 == null) {
             errores.put("password", "\tLas contraseñas no pueden estar vacías");
             peticion.setAttribute("errors", errores);
             forwardToShowRegister(peticion, respuesta);
@@ -93,15 +89,15 @@ public class Registro extends HttpServlet {
             escritor.println(usuario + " " + contra);
             escritor.close();
 
-            respuesta.sendRedirect("Servlets.PaginaUsuario");
+            respuesta.sendRedirect("Servlets.Paginas.Usuario");
         }
     }
 
     private void forwardToShowRegister(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException, ServletException {
-        this.getServletContext().getRequestDispatcher("/Servlets.Registro").forward(peticion, respuesta);
+        this.getServletContext().getRequestDispatcher("/Servlets.Paginas.Registro").forward(peticion, respuesta);
     }
 
     private void forwardToShowMenu(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        this.getServletContext().getRequestDispatcher("/Servlets.PaginaUsuario").forward(request, response);
+        this.getServletContext().getRequestDispatcher("/Servlets.Paginas.Usuario").forward(request, response);
     }
 }

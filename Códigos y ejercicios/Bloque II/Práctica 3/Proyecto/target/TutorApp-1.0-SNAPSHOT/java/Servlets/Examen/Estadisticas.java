@@ -34,13 +34,15 @@ public class Estadisticas extends HttpServlet {
         PrintWriter escritor = respuesta.getWriter();
 
         escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
-                "  <head>\n" +
-                "    <meta charset=\"utf-8\">\n" +
-                "    <title>Estadísticas</title>\n" +
-                "  </head>\n" +
-                "  <body>\n" +
-                "    <a href=Servlets.PaginaUsuario> Volver al perfil </a><br>" +       // REDIRECCIÓN
-                "  </body>\n" +
-                "</html>");
+            "  <head>\n" +
+            "    <meta charset=\"utf-8\">\n" +
+            "    <title>Estadísticas</title>\n" +
+            "  </head>\n" +
+            "  <body>\n" +
+            "    <a href=Servlets.Paginas.Usuario> Volver al perfil </a><br>" +       // REDIRECCIÓN
+            "  </body>\n" +
+            "</html>");
+
+        escritor.close();
     }
 }

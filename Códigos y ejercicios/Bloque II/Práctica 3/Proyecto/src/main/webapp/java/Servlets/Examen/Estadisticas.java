@@ -39,7 +39,7 @@ public class Estadisticas extends HttpServlet {
             "    <title>Estadísticas</title>\n" +
             "  </head>\n" +
             "  <body>\n" +
-            "    <a href=Servlets.PaginaUsuario> Volver al perfil </a><br>" +       // REDIRECCIÓN
+            "    <a href=Servlets.Paginas.Usuario> Volver al perfil </a><br>" +       // REDIRECCIÓN
             "  </body>\n" +
             "</html>");
 

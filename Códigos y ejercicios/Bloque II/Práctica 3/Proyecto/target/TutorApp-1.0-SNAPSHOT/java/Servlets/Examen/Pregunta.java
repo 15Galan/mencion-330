@@ -1,5 +1,7 @@
 package Servlets.Examen;
 
+import Funciones.Examen;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +10,11 @@ import javax.servlet.http.*;
 
 @WebServlet(name = "Servlets.Examenes.Pregunta", urlPatterns = {"/Servlets.Examenes.Pregunta"})
 public class Pregunta extends HttpServlet {
+
+
+    private Examen examen;
+    private int iteracion = 0;
+
 
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
@@ -34,24 +41,40 @@ public class Pregunta extends HttpServlet {
         PrintWriter escritor = respuesta.getWriter();
 
         escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
-                "  <head>\n" +
-                "    <meta charset=\"utf-8\">\n" +
-                "    <title></title>\n" +
-                "  </head>\n" +
-                "  <body>\n" +
-                "    <p>\n" +
-                "      Empleo actual:" +
-                "      <br>\n" +
-                "      <input type=\"radio\" name=\"respuesta\" value=\"si\"> Sí <br>\n" +
-                "      <input type=\"radio\" name=\"respuesta\" value=\"no\"> No <br>\n" +
-                "      <input type=\"radio\" name=\"respuesta\" value=\"veces\"> A veces\n" +
-                "    </p>\n" +
-                "    <p>" +
-                "      <input type=\"submit\" value=\"Enviar datos\">" +
-                "    </p>" +
-                "    <a href=Servlets.Examenes.Pregunta> Siguiente pregunta </a><br>" +   // REDIRECCIÓN
-                "    <a href=Servlets.Examenes.Estadisticas> Finalizar TEST </a><br>" +   // REDIRECCIÓN
-                "  </body>\n" +
-                "</html>");
+            "  <head>\n" +
+            "    <meta charset=\"utf-8\">\n" +
+            "    <title></title>\n" +
+            "  </head>\n" +
+            "  <body>\n" +
+            "    <p>\n" +
+            "      Empleo actual:" +
+            "      \nIteración: " + (++iteracion) +
+            "      <br>\n" +
+            "      <input type=\"radio\" name=\"respuesta\" value=\"si\"> Sí <br>\n" +
+            "      <input type=\"radio\" name=\"respuesta\" value=\"no\"> No <br>\n" +
+            "      <input type=\"radio\" name=\"respuesta\" value=\"aveces\"> A veces\n" +
+            "    </p>\n" +
+            "    <p>" +
+            "      <input type=\"submit\" href=Servlets.Examenes.Pregunta value=\"Enviar datos\">" +
+            "    </p>" +
+            "    <a href=Servlets.Examenes.Pregunta> Siguiente pregunta </a><br>" +   // REDIRECCIÓN
+            "    <a href=Servlets.Examenes.Estadisticas> Finalizar TEST </a><br>" +   // REDIRECCIÓN
+            "  </body>\n" +
+            "</html>");
+
+        /*
+            <fieldset>
+            <legend>Empleo Actual</legend>
+            <form>
+            <input type="radio" name="respuesta" value="si">Si
+            <input type="radio" name="respuesta" value="no">No
+            <input type="radio" name="respuesta" value="A veces">A veces
+            <br>
+            <input type="submit" value="Enviar">
+            </form>
+            </fieldset>
+         */
+
+        escritor.close();
     }
 }

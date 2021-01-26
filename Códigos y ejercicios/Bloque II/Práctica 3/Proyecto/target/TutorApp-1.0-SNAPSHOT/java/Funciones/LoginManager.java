@@ -18,8 +18,7 @@ public final class LoginManager {
     public static void login(HttpServletRequest peticion, String usuario) {
         HttpSession session = peticion.getSession(true);
 
-        // Deprecado, actualmente es 'setAttribute()'
-        session.putValue(ATRIBUTO_USUARIO, usuario);
+        session.setAttribute(ATRIBUTO_USUARIO, usuario);
     }
 
     public static void logout(HttpServletRequest peticion) {
@@ -37,8 +36,7 @@ public final class LoginManager {
             return null;
 
         } else {
-            // Deprecado, actualmente es 'getAttribute()'
-            return (String) session.getValue(ATRIBUTO_USUARIO);
+            return session.getAttribute(ATRIBUTO_USUARIO).toString();
         }
     }
 }

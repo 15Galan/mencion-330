@@ -1,4 +1,4 @@
-package Servlets;
+package Servlets.Paginas;
 
 /* @author  Lidia Fuentes
  * @editor  Antonio J. Galán Herrera
@@ -11,7 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 
-@WebServlet(name = "Servlets.Registro", urlPatterns = {"/Servlets.Registro"})
+@WebServlet(name = "Servlets.Paginas.Registro", urlPatterns = {"/Servlets.Paginas.Registro"})
 public class Registro extends HttpServlet {
 
 
@@ -135,7 +135,7 @@ public class Registro extends HttpServlet {
 //                "    <title>Nuevo Examenes</title>\n" +
 //                "  </head>\n" +
 //                "  <body>\n" +
-//                "    <a href=Servlets.PaginaPrincipal> Fin del registro </a><br>" +       // REDIRECCIÓN
+//                "    <a href=Servlets.Paginas.Principal> Fin del registro </a><br>" +       // REDIRECCIÓN
 //                "  </body>\n" +
 //                "</html>");
 

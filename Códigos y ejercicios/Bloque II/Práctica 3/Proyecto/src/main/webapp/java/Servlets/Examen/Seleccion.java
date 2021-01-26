@@ -39,7 +39,7 @@ public class Seleccion extends HttpServlet {
             "    <title>Examenes Seleccionado</title>\n" +
             "  </head>\n" +
             "  <body>\n" +
-            "    <a href=Servlets.Examenes.Pregunta> Comenzar </a><br>" +     // REDIRECCIÓN
+            "    <a href=Servlets.Examenes.Pregunta> Comenzar </a><br>" +   // REDIRECCIÓN
             "  </body>\n" +
             "</html>");
 

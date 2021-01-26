@@ -29,26 +29,19 @@ public class Login extends HttpServlet {
         if (loginName == null || loginName.trim().length() == 0) {
             Map<String, String> errors = new HashMap<>();
 
-            errors.put("loginName", "Mandatory field");
+            errors.put("loginName", "Campo obligatorio");
             peticion.setAttribute("errors", errors);
             forwardToShowLogin(peticion, respuesta);
 
         } else {
             LoginManager.login(peticion, loginName.trim());
-            respuesta.sendRedirect("Servlets.PaginaUsuario");
+            respuesta.sendRedirect("Servlets.Paginas.Usuario");
         }
     }
 
 
     // Métodos propios
-    /**
-     * Define las sentencias HTML que forman la página.
-     *
-     * @param respuesta     Conexión a la que se envía la página
-     *
-     * @throws IOException  Error al escribir datos en la respuesta
-     */
     private void forwardToShowLogin(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException, ServletException {
-        this.getServletContext().getRequestDispatcher("/Servlets.MostrarLogin").forward(peticion, respuesta);
+        this.getServletContext().getRequestDispatcher("/Servlets.Paginas.Login").forward(peticion, respuesta);
     }
 }

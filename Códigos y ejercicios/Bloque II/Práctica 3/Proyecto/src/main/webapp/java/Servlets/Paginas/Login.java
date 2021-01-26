@@ -1,4 +1,4 @@
-package Servlets;
+package Servlets.Paginas;
 
 /* @author  Lidia Fuentes
  * @editor  Antonio J. Galán Herrera
@@ -10,8 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 
-@WebServlet(name = "Servlets.MostrarLogin", urlPatterns = {"/Servlets.MostrarLogin"})
-public class MostrarLogin extends HttpServlet {
+@WebServlet(name = "Servlets.Paginas.Login", urlPatterns = {"/Servlets.Paginas.Login"})
+public class Login extends HttpServlet {
 
     private final String RUTA_BASE = "C:\\Users\\Usuario\\Desktop\\D.S.T\\Códigos y ejercicios\\Bloque II\\Práctica 3\\Proyecto\\src\\main\\resources\\";
 //    private String usuariosTXT, examenesTXT;
@@ -22,7 +22,7 @@ public class MostrarLogin extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
-        inicializarFicheros();
+        inicializarUsuarios();
 
         erroresSesion(peticion);
 
@@ -91,20 +91,21 @@ public class MostrarLogin extends HttpServlet {
         escritor.println("<th align=\"right\" width=\"50%\"> Usuario </th>");
 
         escritor.println("<td align=\"left\">" + "<input type=\"text\" name=\"loginName\" "
-                + " value=\"" + usuario + "\" size=\"16\" maxlength=\"16\">"
-                + errorUsuario + "</td>");
+            + " value=\"" + usuario + "\" size=\"16\" maxlength=\"16\">"
+            + errorUsuario + "</td>");
         escritor.println("</tr><br>");
 
         escritor.println("<tr>");
         escritor.println("<th align=\"right\" width=\"50%\"> Contraseña </th>");
         escritor.println("<td align=\"left\"> <input type=\"password\" name=\"password\" " + " value=\"" + contra
-                + "\" size=\"16\" maxlength=\"16\">" + errorContra + "</td>");
+            + "\" size=\"16\" maxlength=\"16\">" + errorContra + "</td>");
         escritor.println("</tr>");
 
         /* Registrarse/Invitado */
         escritor.println("<tr>");
         escritor.println("<td width=\"50%\"></td>");
-        escritor.println("<td align=\"left\" width=\"50%\"> " + "<a href=\"Servlets.Registro\">Registrarse</a>");
+        escritor.println("<td align=\"left\" width=\"50%\">");
+        escritor.println("<a href=\"Servlets.Paginas.Registro\">Registrarse</a>");
         escritor.println("</tr><tr>");
         escritor.println("<td width=\"50%\"></td>");
         escritor.println("</tr>");
@@ -112,7 +113,8 @@ public class MostrarLogin extends HttpServlet {
         /* Boton de login. */
         escritor.println("<tr>");
         escritor.println("<td width=\"50%\"></td>");
-        escritor.println("<td align=\"left\" width=\"50%\"> " + "<input type=\"submit\" value=\"Login\"></td>");
+        escritor.println("<td align=\"left\" width=\"50%\"> ");
+        escritor.println("<input type=\"submit\" value=\"Login\"></td>");
         escritor.println("</tr>");
 
 //        escritor.println("<p>¿" + usuariosTXT + " existe?</p>");
@@ -132,7 +134,7 @@ public class MostrarLogin extends HttpServlet {
 //                "    <title>Mostrar Login</title>\n" +
 //                "  </head>\n" +
 //                "  <body>\n" +
-//                "    <a href=Servlets.PaginaPrincipal> Crear </a><br>" +     // REDIRECCIÓN
+//                "    <a href=Servlets.Paginas.Principal> Crear </a><br>" +     // REDIRECCIÓN
 //                "  </body>\n" +
 //                "</html>");
 
@@ -145,7 +147,7 @@ public class MostrarLogin extends HttpServlet {
      *
      * @throws IOException    El fichero no se encuentra
      */
-    public void inicializarFicheros() throws IOException {
+    public void inicializarUsuarios() throws IOException {
         PrintWriter escritor;
         File fichero;
 
@@ -159,22 +161,6 @@ public class MostrarLogin extends HttpServlet {
             escritor.println("srgalan 1234567890");
             escritor.println("alumno siette");
             escritor.println("jose jose");
-
-            escritor.close();
-        }
-
-        // Generar el fichero
-        fichero = new File(RUTA_BASE + "examenes.txt");
-//        examenesTXT = fichero.getAbsolutePath();
-
-        if (!fichero.exists()) {
-            escritor = new PrintWriter(fichero);
-
-            for (int i = 1; i <= 3; i++) {
-                escritor.println("Titulo " + i);
-                escritor.println("Descripcion");
-                escritor.println("preguntas...");
-            }
 
             escritor.close();
         }

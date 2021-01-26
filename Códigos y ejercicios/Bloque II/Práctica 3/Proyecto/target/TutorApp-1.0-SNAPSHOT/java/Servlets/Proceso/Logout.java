@@ -18,7 +18,7 @@ public class Logout extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException, ServletException {
         LoginManager.logout(peticion);
-        respuesta.sendRedirect("Servlets.PaginaUsuario");
+        respuesta.sendRedirect("Servlets.Paginas.Usuario");
     }
 
     @Override

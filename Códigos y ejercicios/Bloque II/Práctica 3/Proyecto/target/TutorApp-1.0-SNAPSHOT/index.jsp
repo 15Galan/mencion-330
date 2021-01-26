@@ -16,6 +16,6 @@
 
         <br/>
 
-        <a href="Servlets.PaginaPrincipal">Abrir práctica</a>
+        <a href="Servlets.Paginas.Principal">Abrir práctica</a>
     </body>
 </html>
