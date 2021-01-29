@@ -127,18 +127,7 @@ public class Registro extends HttpServlet {
         // Fin
         escritor.println("</body></html>");
 
-        // Cerrar el descriptor de salida"
-
-//        escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
-//                "  <head>\n" +
-//                "    <meta charset=\"utf-8\">\n" +
-//                "    <title>Nuevo Examenes</title>\n" +
-//                "  </head>\n" +
-//                "  <body>\n" +
-//                "    <a href=Servlets.Paginas.Principal> Fin del registro </a><br>" +       // REDIRECCIÓN
-//                "  </body>\n" +
-//                "</html>");
-
+        // Cerrar el descriptor de salida
         escritor.close();
     }
 }

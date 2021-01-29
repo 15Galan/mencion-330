@@ -43,11 +43,12 @@ public class Principal extends HttpServlet {
         PrintWriter escritor = respuesta.getWriter();
 
         // TODO - Estilizar la página principal
-        escritor.println("<!DOCTYPE <!DOCTYPE html>\n" +
+        escritor.println("<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "    <head>\n" +
                 "        <meta charset=\"utf-8\">\n" +
                 "        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+                "        <link href=\"" + RUTA_CSS + "\" rel=\"stylesheet\" type=\"text/css\" />" +
                 "        <title>Inicio</title>\n" +
                 "    </head>\n" +
                 "    <body>\n" +

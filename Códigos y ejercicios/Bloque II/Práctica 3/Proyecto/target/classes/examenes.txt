@@ -1,9 +1,49 @@
-Titulo 1
-Descripcion
-preguntas...
-Titulo 2
-Descripcion
-preguntas...
-Titulo 3
-Descripcion
-preguntas...
+Inicial 1
+Test generado en el arranque
+¿Estudias los jueves?
+Sí
+¿Estudias los martes?
+A veces
+¿Estudias los lunes?
+No
+¿Estudias los domingos?
+No
+¿Estudias los jueves?
+No
+¿Estudias los domingos?
+No
+¿Estudias los martes?
+No
+¿Estudias los sábados?
+No
+
+Inicial 2
+Test generado en el arranque
+¿Estudias los lunes?
+No
+¿Estudias los lunes?
+No
+¿Estudias los viernes?
+Sí
+¿Estudias los jueves?
+Sí
+¿Estudias los viernes?
+A veces
+
+Inicial 3
+Test generado en el arranque
+¿Estudias los lunes?
+A veces
+¿Estudias los miércoles?
+No
+¿Estudias los martes?
+No
+¿Estudias los lunes?
+A veces
+¿Estudias los jueves?
+No
+¿Estudias los domingos?
+A veces
+¿Estudias los lunes?
+Sí
+

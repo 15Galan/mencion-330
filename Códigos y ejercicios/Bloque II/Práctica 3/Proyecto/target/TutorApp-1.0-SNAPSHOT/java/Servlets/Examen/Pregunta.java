@@ -56,24 +56,17 @@ public class Pregunta extends HttpServlet {
             "    </p>\n" +
             "    <p>" +
             "      <input type=\"submit\" href=Servlets.Examenes.Pregunta value=\"Enviar datos\">" +
-            "    </p>" +
-            "    <a href=Servlets.Examenes.Pregunta> Siguiente pregunta </a><br>" +   // REDIRECCIÓN
-            "    <a href=Servlets.Examenes.Estadisticas> Finalizar TEST </a><br>" +   // REDIRECCIÓN
-            "  </body>\n" +
-            "</html>");
+            "    </p>");
 
-        /*
-            <fieldset>
-            <legend>Empleo Actual</legend>
-            <form>
-            <input type="radio" name="respuesta" value="si">Si
-            <input type="radio" name="respuesta" value="no">No
-            <input type="radio" name="respuesta" value="A veces">A veces
-            <br>
-            <input type="submit" value="Enviar">
-            </form>
-            </fieldset>
-         */
+        if (iteracion == examen.getPreguntas().size()) {
+            escritor.println("    <a href=Servlets.Examenes.Estadisticas> Finalizar TEST </a><br>");    // REDIRECCIÓN
+
+        } else {
+            escritor.println("    <a href=Servlets.Examenes.Pregunta> Siguiente pregunta </a><br>");   // REDIRECCIÓN
+        }
+
+        escritor.println("  </body>\n" +
+            "</html>");
 
         escritor.close();
     }

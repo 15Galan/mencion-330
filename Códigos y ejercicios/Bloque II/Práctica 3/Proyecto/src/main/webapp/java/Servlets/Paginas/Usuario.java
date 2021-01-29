@@ -6,10 +6,8 @@ package Servlets.Paginas;
 
 import Funciones.Examen;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.Map;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.servlet.ServletException;
@@ -23,7 +21,6 @@ public class Usuario extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
         inicializarExamenes();
-
         generarPagina(respuesta, peticion.getParameter("loginName"));
 
         // respuesta.sendRedirect("Servlets.Paginas.Usuario");
@@ -44,8 +41,6 @@ public class Usuario extends HttpServlet {
      * @throws IOException  Error al escribir datos en la respuesta
      */
     private void generarPagina(HttpServletResponse respuesta, String usuario) throws IOException {
-        Examen incial = new Examen("Inicial", "Test generado en el arranque");
-
         respuesta.setContentType("text/html; charset=ISO-8859-1");
 
         PrintWriter escritor = respuesta.getWriter();
@@ -65,22 +60,32 @@ public class Usuario extends HttpServlet {
         escritor.close();
     }
 
-    public void inicializarExamenes() throws FileNotFoundException {
-        PrintWriter escritor;
-
+    public void inicializarExamenes() {
         File fichero = new File(RUTA_BASE + "examenes.txt");
 //        examenesTXT = fichero.getAbsolutePath();
 
         if (!fichero.exists()) {
-            escritor = new PrintWriter(fichero);
+            for (int i = 0; i < 3; i++) {
+                anadirExamen(new Examen("Inicial " + (i+1), "Test generado en el arranque"), fichero);
+            }
+        }
+    }
 
-            for (int i = 1; i <= 3; i++) {
-                escritor.println("Titulo " + i);
-                escritor.println("Descripcion");
-                escritor.println("preguntas...");
+    public void anadirExamen(Examen examen, File fichero) {
+        try (FileWriter escritor = new FileWriter(fichero, true)) {
+
+            escritor.append(examen.getTitulo()).append("\n");
+            escritor.append(examen.getDescripcion()).append("\n");
+
+            for (int i = 0; i < examen.getPreguntas().size(); i++) {
+                escritor.append(examen.getPreguntas().get(i)).append("\n");
+                escritor.append(examen.getRespuestas().get(i)).append("\n");
             }
 
-            escritor.close();
+            escritor.append("\n");
+
+        } catch (IOException e) {
+            System.err.println("No puedo escribirse sobre '" + RUTA_BASE + "examenes.txt'.");
         }
     }
 }

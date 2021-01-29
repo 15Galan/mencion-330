@@ -6,8 +6,8 @@ package Servlets.Paginas;
 
 import Funciones.Examen;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.Map;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.servlet.ServletException;
@@ -16,8 +16,11 @@ import javax.servlet.ServletException;
 @WebServlet (name = "Servlets.Paginas.Usuario", urlPatterns = {"/Servlets.Paginas.Usuario"})
 public class Usuario extends HttpServlet {
 
+    private final String RUTA_BASE = "C:\\Users\\Usuario\\Desktop\\D.S.T\\Códigos y ejercicios\\Bloque II\\Práctica 3\\Proyecto\\src\\main\\resources\\";
+
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
+        inicializarExamenes();
         generarPagina(respuesta, peticion.getParameter("loginName"));
 
         // respuesta.sendRedirect("Servlets.Paginas.Usuario");
@@ -38,30 +41,11 @@ public class Usuario extends HttpServlet {
      * @throws IOException  Error al escribir datos en la respuesta
      */
     private void generarPagina(HttpServletResponse respuesta, String usuario) throws IOException {
-        Examen incial = new Examen("Inicial", "Test generado en el arranque");
-
         respuesta.setContentType("text/html; charset=ISO-8859-1");
 
         PrintWriter escritor = respuesta.getWriter();
 
         // TODO - Estilizar la página principal
-//        // Botón de LOGIN, botón de REGISTRO y logo de Aplicación
-//        escritor.println("<html><head><title>");
-//        escritor.println("Biblioteca Pública María Moliner");
-//        escritor.println("</title></head>");
-//        escritor.println("<body text=\"#000000\" bgcolor=\"#ffffff\" link=\"#000ee0\" vlink=\"#551a8b\" alink=\"#000ee0\">");
-//        escritor.println("<h1>¡Buenos días, " + usuario + "! </h1>");
-//        escritor.println("<br><br><br>");
-//        escritor.println("Busqueda<br>");
-//        escritor.println("<select name=\"tipo\">\n"
-//            + "<option selected>Titulo\n"
-//            + "<option>Autor\n</select>"
-//            + "<input type=\"text\" name=\"patronus\" value=\"\" required> "
-//            + "<input type=\"submit\" name=\"send\" value =\"BUSCAR\"> </form>");
-//        escritor.println("<a href=Servlets.Examenes.Examenes> Generar TEST </a><br>");    // REDIRECCIÓN
-//        escritor.println("<a href=Servlets.Examenes.Seleccion> Elegir TEST </a><br>");    // REDIRECCIÓN
-//        escritor.println("</body></html>");
-
         escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
             "  <head>\n" +
             "    <meta charset=\"utf-8\">\n" +
@@ -74,5 +58,34 @@ public class Usuario extends HttpServlet {
             "</html>");
 
         escritor.close();
+    }
+
+    public void inicializarExamenes() {
+        File fichero = new File(RUTA_BASE + "examenes.txt");
+//        examenesTXT = fichero.getAbsolutePath();
+
+        if (!fichero.exists()) {
+            for (int i = 0; i < 3; i++) {
+                anadirExamen(new Examen("Inicial " + (i+1), "Test generado en el arranque"), fichero);
+            }
+        }
+    }
+
+    public void anadirExamen(Examen examen, File fichero) {
+        try (FileWriter escritor = new FileWriter(fichero, true)) {
+
+            escritor.append(examen.getTitulo()).append("\n");
+            escritor.append(examen.getDescripcion()).append("\n");
+
+            for (int i = 0; i < examen.getPreguntas().size(); i++) {
+                escritor.append(examen.getPreguntas().get(i)).append("\n");
+                escritor.append(examen.getRespuestas().get(i)).append("\n");
+            }
+
+            escritor.append("\n");
+
+        } catch (IOException e) {
+            System.err.println("No puedo escribirse sobre '" + RUTA_BASE + "examenes.txt'.");
+        }
     }
 }

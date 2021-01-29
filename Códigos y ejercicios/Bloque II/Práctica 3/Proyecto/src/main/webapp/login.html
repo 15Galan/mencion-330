@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html lang="es">
+    <head>
+        <title>Login</title>
+
+        <meta charset="utf-8">
+
+        <link rel="stylesheet" type="text/css" href="adornos/estilos.css">
+    </head>
+
+    <body>
+        <form method="POST" action="Servlets.Proceso.Login">
+            <h1> Inicia sesión </h1>
+
+            <table>
+                <tr>
+                    <th align="right" width="50%">Usuario</>
+
+                    <td>
+                        <input type="text" name="loginName" value="$usuario" size="16" maxlength="16"></td>
+                </tr>
+                <br>
+
+                <tr>
+                    <th align="right" width="50%">Contraseña</th>
+
+                    <td align="left">
+                        <input type="password" name="password" value="$contraseña" size="16" maxlength="16"></td>
+                </tr>
+
+                <tr>
+                    <td width="50%"></td>
+                    <td align="left" width="50%">
+                        <a href="Servlets.Paginas.Registro">Registrarse</a>
+                </tr>
+
+                <tr>
+                    <td width="50%"></td>
+                </tr>
+
+                <tr>
+                    <td width="50%"></td>
+
+                    <td align="left" width="50%">
+                        <input type="submit" value="Login"></td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>

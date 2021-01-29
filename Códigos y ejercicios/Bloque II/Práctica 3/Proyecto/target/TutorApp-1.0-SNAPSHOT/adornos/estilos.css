@@ -1,0 +1,103 @@
+body {
+    background-color: limegreen;
+}
+
+#contenido {
+    background-color: white;
+    border: 5px solid #072178;
+    text-align: center;
+    margin: auto;
+    height: auto;
+    padding: 20px;
+}
+
+#banner {
+    width: auto;
+}
+
+h1 {
+    font-family: Helvetica, serif;
+    color: red;
+    font-size: 40px;
+}
+
+h2 {
+    font-size: 22px;
+    font-family: Verdana, serif;
+    color: rgb(18,100,156)
+}
+
+p {
+    font-family: Helvetica, serif;
+    color: #666;
+    font-size: 18px;
+}
+
+
+/* ICONO COPYRIGHT */
+/*#copyright {*/
+/*	margin-top: 15px;*/
+/*	padding-top: 5px;*/
+/*	border-top: 2px solid #666;*/
+/*	margin-left: 0px;*/
+/*    background-position-x: 285px;*/
+/*    text-align: center;*/
+/*    text-decoration: none;*/
+/*    font-family: Helvetica, serif;*/
+/*    font-size: 18px;*/
+/*    font-weight: bold;*/
+/*}*/
+
+
+/* BARRA DE MENUS */
+#navegador {
+    list-style-type: none;
+    padding-left: 0px;
+    padding-top: 5px;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+}
+
+#navegador a {
+    float: left;
+    color: black;
+    text-decoration: none;
+    border: 2px solid white;
+    border-right: none;
+    background-color: lightgray;
+    padding: 10px 10px;
+    text-align: center;
+    font-family: Helvetica, serif;
+    font-size: 18px;
+    width: 298px;
+}
+
+#navegador a:hover {
+    color: rgb(18,100,156);
+    background-color: white;
+}
+
+/* FONDO */
+/*#fondo {*/
+/*    background: url(imagenes/fondo.jpg)no-repeat center;*/
+/*}*/
+
+/*#imagenes {*/
+/*    text-align: center;*/
+/*    padding-top: 10px;*/
+/*}*/
+
+.imagenes1 {
+    display: inline-block;
+    margin: auto;
+    width: 282px;
+    height: 204px;
+}
+
+img {
+    width:350px ;
+    height:250px;
+}

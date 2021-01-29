@@ -51,7 +51,7 @@ public class Creacion extends HttpServlet {
             "    <p>Descripción: " + examen.getDescripcion() + "</p>\n" +
             "    <p>Número de preguntas: " + examen.getPreguntas().size() + "</p>" +
             "    <form action=\"Servlets.Paginas.Usuario\" method=\"POST\">\n" +
-            "      <input type=\"submit\" href=Servlets.Examenes.Pregunta value=\"Guardar y salir\">\n" +
+            "      <input type=\"submit\" href=Servlets.Examenes.Usuario value=\"Volver al perfil\">\n" +
             "    </form>" +
 //            "    <a href=Servlets.Paginas.Usuario> Volver al perfil </a><br>" +     // REDIRECCIÓN
             "  </body>\n" +

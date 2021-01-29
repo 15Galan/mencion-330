@@ -2,9 +2,13 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="es">
     <head>
         <title>Introducción</title>
+
+        <meta charset="utf-8">
+
+        <link rel="stylesheet" type="text/css" href="adornos/estilos.css">
     </head>
 
     <body>

@@ -22,7 +22,7 @@ public class Login extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
-        inicializarFicheros();
+        inicializarUsuarios();
 
         erroresSesion(peticion);
 
@@ -117,26 +117,11 @@ public class Login extends HttpServlet {
         escritor.println("<input type=\"submit\" value=\"Login\"></td>");
         escritor.println("</tr>");
 
-//        escritor.println("<p>¿" + usuariosTXT + " existe?</p>");
-//        escritor.println("<p>" + new File(usuariosTXT).exists() + "</p>");
-//        escritor.println("<p>¿" + examenesTXT + " existe?</p>");
-//        escritor.println("<p>" + new File(examenesTXT).exists() + "</p>");
-
         /* Fin de tabla. */
         escritor.println("</table>");
 
         /* Fin. */
         escritor.println("</body></html>");
-
-//        escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
-//                "  <head>\n" +
-//                "    <meta charset=\"utf-8\">\n" +
-//                "    <title>Mostrar Login</title>\n" +
-//                "  </head>\n" +
-//                "  <body>\n" +
-//                "    <a href=Servlets.Paginas.Principal> Crear </a><br>" +     // REDIRECCIÓN
-//                "  </body>\n" +
-//                "</html>");
 
         escritor.close();
     }
@@ -147,7 +132,7 @@ public class Login extends HttpServlet {
      *
      * @throws IOException    El fichero no se encuentra
      */
-    public void inicializarFicheros() throws IOException {
+    public void inicializarUsuarios() throws IOException {
         PrintWriter escritor;
         File fichero;
 
@@ -161,22 +146,6 @@ public class Login extends HttpServlet {
             escritor.println("srgalan 1234567890");
             escritor.println("alumno siette");
             escritor.println("jose jose");
-
-            escritor.close();
-        }
-
-        // Generar el fichero
-        fichero = new File(RUTA_BASE + "examenes.txt");
-//        examenesTXT = fichero.getAbsolutePath();
-
-        if (!fichero.exists()) {
-            escritor = new PrintWriter(fichero);
-
-            for (int i = 1; i <= 3; i++) {
-                escritor.println("Titulo " + i);
-                escritor.println("Descripcion");
-                escritor.println("preguntas...");
-            }
 
             escritor.close();
         }
