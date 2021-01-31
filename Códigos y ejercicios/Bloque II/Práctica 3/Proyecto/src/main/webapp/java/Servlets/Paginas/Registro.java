@@ -242,6 +242,10 @@ public class Registro extends HttpServlet {
                 "                    </tr>\n" +
                 "                </table>\n" +
                 "            </form>\n" +
+                "\n" +
+                "            <ul id=\"navegador\">\n" +
+                "                <li><br><a href=\"Servlets.Paginas.Principal\">Volver al Inicio</a></li>\n" +
+                "            </ul>" +
                 "        </div>\n" +
                 "    </body>\n" +
                 "</html>\n");

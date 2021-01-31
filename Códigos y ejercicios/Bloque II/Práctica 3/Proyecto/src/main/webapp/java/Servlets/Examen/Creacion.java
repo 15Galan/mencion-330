@@ -63,6 +63,10 @@ public class Creacion extends HttpServlet {
                 "            <form method=\"POST\" action=\"Servlets.Paginas.Usuario\">\n" +
                 "                <input type=\"submit\" value=\"Regresar\">\n" +
                 "            </form>\n" +
+                "\n" +
+                "            <ul id=\"navegador\">\n" +
+                "                <li><br><a href=\"Servlets.Paginas.Principal\">Volver al Inicio</a></li>\n" +
+                "            </ul>" +
                 "        </div>\n" +
                 "    </body>\n" +
                 "</html>\n");

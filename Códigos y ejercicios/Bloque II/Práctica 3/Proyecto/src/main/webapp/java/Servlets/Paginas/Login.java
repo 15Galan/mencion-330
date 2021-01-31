@@ -117,6 +117,10 @@ public class Login extends HttpServlet {
                 "                    </tr>\n" +
                 "                </table>\n" +
                 "            </form>\n" +
+                "\n" +
+                "            <ul id=\"navegador\">\n" +
+                "                <li><br><a href=\"Servlets.Paginas.Principal\">Volver al Inicio</a></li>\n" +
+                "            </ul>" +
                 "        </div>\n" +
                 "    </body>\n" +
                 "</html>\n");
@@ -132,11 +136,9 @@ public class Login extends HttpServlet {
      */
     public void inicializarUsuarios() throws IOException {
         PrintWriter escritor;
-        File fichero;
 
         // Generar las cuentas de usuario
-        fichero = new File(RUTA_BASE + "usuarios.txt");
-//        usuariosTXT = fichero.getAbsolutePath();
+        File fichero = new File(RUTA_BASE + "usuarios.txt");
 
         if (!fichero.exists()) {
             escritor = new PrintWriter(fichero);

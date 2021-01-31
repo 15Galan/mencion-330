@@ -49,6 +49,10 @@ public class Estadisticas extends HttpServlet {
                 "    <body>\n" +
                 "        <div id=\"contenido\">\n" +
                 "            <p>$estadisticas</p>\n" +
+                "\n" +
+                "            <ul id=\"navegador\">\n" +
+                "                <li><br><a href=\"Servlets.Paginas.Principal\">Volver al Inicio</a></li>\n" +
+                "            </ul>" +
                 "        </div>\n" +
                 "    </body>\n" +
                 "</html>\n");

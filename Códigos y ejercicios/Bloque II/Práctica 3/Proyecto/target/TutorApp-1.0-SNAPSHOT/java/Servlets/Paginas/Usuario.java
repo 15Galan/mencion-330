@@ -67,7 +67,8 @@ public class Usuario extends HttpServlet {
                 "            <ul id=\"navegador\">\n" +
                 "                <li><a href=Servlets.Examenes.Creacion>Generar TEST</a></li>\n" +
                 "                <li><a href=Servlets.Examenes.Seleccion>Elegir TEST</a></li>\n" +
-                "            </ul>\n" +
+                "                <li><br><a href=Servlets.Paginas.Principal>Volver al Inicio</a></li>\n" +
+                "            </ul>" +
                 "\n" +
                 "            <div class=\"footer\">\n" +
                 "                <p id=top class=\"ftp\">Antonio J. Galán Herrera (Universidad de Málaga)</p>\n" +

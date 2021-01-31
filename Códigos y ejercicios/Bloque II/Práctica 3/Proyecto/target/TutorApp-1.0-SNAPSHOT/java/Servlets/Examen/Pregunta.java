@@ -19,8 +19,6 @@ public class Pregunta extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
         generarPagina(respuesta);
-
-        // respuesta.sendRedirect("Servlets.Examen.Pregunta");
     }
 
     @Override
