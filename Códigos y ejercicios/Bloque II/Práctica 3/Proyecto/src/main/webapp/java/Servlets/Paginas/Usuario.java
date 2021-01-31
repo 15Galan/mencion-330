@@ -5,6 +5,7 @@ package Servlets.Paginas;
  */
 
 import Funciones.Examen;
+import Funciones.LoginManager;
 
 import java.io.*;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +22,7 @@ public class Usuario extends HttpServlet {
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
         inicializarExamenes();
 
-        generarPagina(respuesta, peticion.getParameter("loginName"));
+        generarPagina(respuesta, LoginManager.getLoginName(peticion));
 
         // respuesta.sendRedirect("Servlets.Paginas.Usuario");
     }
