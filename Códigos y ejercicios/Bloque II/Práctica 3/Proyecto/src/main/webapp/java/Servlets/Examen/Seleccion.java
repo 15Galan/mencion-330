@@ -33,15 +33,27 @@ public class Seleccion extends HttpServlet {
 
         PrintWriter escritor = respuesta.getWriter();
 
-        escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
-            "  <head>\n" +
-            "    <meta charset=\"utf-8\">\n" +
-            "    <title>Examenes Seleccionado</title>\n" +
-            "  </head>\n" +
-            "  <body>\n" +
-            "    <a href=Servlets.Examenes.Pregunta> Comenzar </a><br>" +   // REDIRECCIÓN
-            "  </body>\n" +
-            "</html>");
+        escritor.println("<!DOCTYPE html>\n" +
+                "\n" +
+                "<html lang=\"es\">\n" +
+                "    <head>\n" +
+                "        <title>Seleccion</title>\n" +
+                "\n" +
+                "        <meta charset=\"utf-8\">\n" +
+                "\n" +
+                "        <link rel=\"stylesheet\" type=\"text/css\" href=\"adornos/estilos.css\">\n" +
+                "    </head>\n" +
+                "\n" +
+                "    <body>\n" +
+                "        <div id=\"contenido\">\n" +
+                "            <h1>Examen seleccionado</h1>\n" +
+                "\n" +
+                "            <form method=\"POST\" action=\"Servlets.Examen.Pregunta\">\n" +
+                "                <input type=\"submit\" value=\"Comenzar\">\n" +
+                "            </form>\n" +
+                "        </div>\n" +
+                "    </body>\n" +
+                "</html>\n");
 
         escritor.close();
     }

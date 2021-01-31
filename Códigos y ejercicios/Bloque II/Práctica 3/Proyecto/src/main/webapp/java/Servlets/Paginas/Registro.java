@@ -61,73 +61,191 @@ public class Registro extends HttpServlet {
         PrintWriter escritor = respuesta.getWriter();
 
         // Inicio
-        escritor.println("<html><head><title>");
-        escritor.println("Registro");
-        escritor.println("</title></head>");
-        escritor.println("<body text=\"#000000\" bgcolor=\"#ffffff\">");
+//        escritor.println("<!DOCTYPE html>\n" +
+//                "\n" +
+//                "<html lang=\"es\">\n" +
+//                "    <head>\n" +
+//                "        <title>Registro</title>\n" +
+//                "\n" +
+//                "        <meta charset=\"utf-8\">\n" +
+//                "\n" +
+//                "        <link rel=\"stylesheet\" type=\"text/css\" href=\"adornos/estilos.css\">\n" +
+//                "    </head>\n" +
+//                "\n" +
+//                "    <body>" +
+//                "        <div id\"contenido\">\n" +
+//                "            <div id=\"banner\">\n" +
+//                "                <img id=\"logo\" src=\"adornos/Seiis.jpg\" alt=\"\">\n" +
+//                "\n" +
+//                "                <h1>Registro</h1>\n" +
+//                "            </div>" +
+//                "        <form method=\"POST\" action=\"Servlets.Proceso.Registro\">\n" +
+//                "            <table width=\"100%\" border=\"0\" align=\"center\" cellspacing=\"12\">\n" +
+//                "\n" +
+//                "                <tr>\n" +
+//                "                    <th align=\"right\" width=\"50%\">Usuario</th>\n" +
+//                "\n" +
+//                "                    <td align=\"left\">\n" +
+//                "                        <input type=\"text\" name=\"loginName\" value=\"" + usuario + "\" size=\"16\" maxlength=\"16\">\n" +
+//                "                       " + errorUsuario +
+//                "                    </td>\n" +
+//                "                </tr>\n" +
+//                "                <br>\n" +
+//                "\n" +
+//                "                <tr>\n" +
+//                "                    <th align=\"right\" width=\"50%\">Contraseña</th>\n" +
+//                "                    \n" +
+//                "                    <td align=\"left\">\n" +
+//                "                        <input type=\"password\" name=\"password\" value=\"" + contra + "\" size=\"16\" maxlength=\"16\">\n" +
+//                "                        " + errorContra +
+//                "                    </td>\n" +
+//                "                </tr>\n" +
+//                "                \n" +
+//                "                <tr>\n" +
+//                "                    <th align=\"right\" width=\"50%\">Repite contraseña</th>\n" +
+//                "                    \n" +
+//                "                    <td align=\"left\">\n" +
+//                "                        <input type=\"password\" name=\"password2\">\n" +
+//                "                    </td>\n" +
+//                "                </tr>\n" +
+//                "                \n" +
+//                "                <tr>\n" +
+//                "                    <th align=\"right\" width=\"50%\"> DNI </th>\n" +
+//                "                    \n" +
+//                "                    <td align=\"left\">\n" +
+//                "                        <input type=\"text\" name=\"dni\" required>\n" +
+//                "                    </td>\n" +
+//                "                </tr>\n" +
+//                "                \n" +
+//                "                <tr>\n" +
+//                "                    <th align=\"right\" width=\"50%\">Correo electrónico</th>\n" +
+//                "                    \n" +
+//                "                    <td align=\"left\">\n" +
+//                "                        <input type=\"text\" name=\"email\" required>\n" +
+//                "                    </td>\n" +
+//                "                </tr>\n" +
+//                "                                \n" +
+//                "                <tr>\n" +
+//                "                    <th align=\"right\" width=\"50%\">Teléfono</th>\n" +
+//                "                    \n" +
+//                "                    <td align=\"left\">\n" +
+//                "                        <input type=\"text\" name=\"telefono\" required>\n" +
+//                "                    </td>\n" +
+//                "                </tr>\n" +
+//                "                                \n" +
+//                "                <tr>\n" +
+//                "                    <th align=\"right\" width=\"50%\">Dirección</th>\n" +
+//                "                    \n" +
+//                "                    <td align=\"left\">\n" +
+//                "                        <input type=\"text\" name=\"direccion\" required>\n" +
+//                "                    </td>\n" +
+//                "                </tr>\n" +
+//                "                \n" +
+//                "                <tr>\n" +
+//                "                    <td width=\"50%\"></td>\n" +
+//                "                    \n" +
+//                "                    <td align=\"left\" width=\"50%\">\n" +
+//                "                        <input type=\"submit\" value=\"Registrarse y acceder\">\n" +
+//                "                    </td>\n" +
+//                "                </tr>\n" +
+//                "            </table>\n" +
+//                "        </form>\n" +
+//                "    </div></body>\n" +
+//                "</html>\n");
 
-        // Inicio del formulario
-        escritor.println("<form method=\"POST\" action=\"Servlets.Proceso.Registro\">");
+        escritor.println("<!DOCTYPE html>\n" +
+                "\n" +
+                "<html lang=\"es\">\n" +
+                "    <head>\n" +
+                "        <title>Registro</title>\n" +
+                "\n" +
+                "        <meta charset=\"utf-8\">\n" +
+                "\n" +
+                "        <link rel=\"stylesheet\" type=\"text/css\" href=\"adornos/estilos.css\">\n" +
+                "    </head>\n" +
+                "\n" +
+                "    <body>\n" +
+                "        <div id=\"contenido\">\n" +
+                "            <div id=\"banner\">\n" +
+                "                <img id=\"logo\" src=\"adornos/Seiis.jpg\" alt=\"\">\n" +
+                "\n" +
+                "                <h1>Registro</h1>\n" +
+                "            </div>\n" +
+                "\n" +
+                "            <form method=\"POST\" action=\"Servlets.Proceso.Registro\">\n" +
+                "                <table width=\"100%\" border=\"0\" align=\"center\" cellspacing=\"12\">\n" +
+                "                <tr>\n" +
+                "                    <th align=\"right\" width=\"50%\">Usuario</th>\n" +
+                "\n" +
+                "                    <td align=\"left\">\n" +
+                "                        <input type=\"text\" name=\"loginName\" value=\"" + usuario + "\" size=\"16\" maxlength=\"16\">\n" +
+                "                       " + errorUsuario +
+                "                    </td>\n" +
+                "                </tr>\n" +
+                "                <br>\n" +
+                "\n" +
+                "                <tr>\n" +
+                "                    <th align=\"right\" width=\"50%\">Contraseña</th>\n" +
+                "                    \n" +
+                "                    <td align=\"left\">\n" +
+                "                        <input type=\"password\" name=\"password\" value=\"" + contra + "\" size=\"16\" maxlength=\"16\">\n" +
+                "                        " + errorContra +
+                "                    </td>\n" +
+                "                </tr>\n" +
+                "\n" +
+                "                    <tr>\n" +
+                "                        <th align=\"right\" width=\"50%\">Repite contraseña</th>\n" +
+                "\n" +
+                "                        <td align=\"left\">\n" +
+                "                            <input type=\"password\" name=\"password2\">\n" +
+                "                        </td>\n" +
+                "                    </tr>\n" +
+                "\n" +
+                "                    <tr>\n" +
+                "                        <th align=\"right\" width=\"50%\"> DNI </th>\n" +
+                "\n" +
+                "                        <td align=\"left\">\n" +
+                "                            <input type=\"text\" name=\"dni\" required>\n" +
+                "                        </td>\n" +
+                "                    </tr>\n" +
+                "\n" +
+                "                    <tr>\n" +
+                "                        <th align=\"right\" width=\"50%\">Correo electrónico</th>\n" +
+                "\n" +
+                "                        <td align=\"left\">\n" +
+                "                            <input type=\"text\" name=\"email\" required>\n" +
+                "                        </td>\n" +
+                "                    </tr>\n" +
+                "\n" +
+                "                    <tr>\n" +
+                "                        <th align=\"right\" width=\"50%\">Teléfono</th>\n" +
+                "\n" +
+                "                        <td align=\"left\">\n" +
+                "                            <input type=\"text\" name=\"telefono\" required>\n" +
+                "                        </td>\n" +
+                "                    </tr>\n" +
+                "\n" +
+                "                    <tr>\n" +
+                "                        <th align=\"right\" width=\"50%\">Dirección</th>\n" +
+                "\n" +
+                "                        <td align=\"left\">\n" +
+                "                            <input type=\"text\" name=\"direccion\" required>\n" +
+                "                        </td>\n" +
+                "                    </tr>\n" +
+                "\n" +
+                "                    <tr>\n" +
+                "                        <td width=\"50%\"></td>\n" +
+                "\n" +
+                "                        <td align=\"left\" width=\"50%\">\n" +
+                "                            <input type=\"submit\" value=\"Registrarse\">\n" +
+                "                        </td>\n" +
+                "                    </tr>\n" +
+                "                </table>\n" +
+                "            </form>\n" +
+                "        </div>\n" +
+                "    </body>\n" +
+                "</html>\n");
 
-        escritor.println("<h1 align=\"center\"> Registro en el Sistema Tutor </h1>");
-        escritor.println("<h1 align=\"center\"> Introduzca usuario y contraseña </h1>");
-
-        // Inicio de la table
-        escritor.println("<table width=\"100%\" border=\"0\" align=\"center\"cellspacing=\"12\">");
-
-        // Login
-        escritor.println("<tr>");
-        escritor.println("<th align=\"right\" width=\"50%\"> Usuario </th>");
-
-        escritor.println("<td align=\"left\">"
-                + "<input type=\"text\" name=\"loginName\" "
-                + "value=\"" + usuario + "\" size=\"16\" maxlength=\"16\">" + errorUsuario + "</td>");
-        escritor.println("</tr><br>");
-
-        escritor.println("<tr>");
-        escritor.println("<th align=\"right\" width=\"50%\"> Contraseña </th>");
-        escritor.println("<td align=\"left\"> <input type=\"password\" name=\"password\" "
-                + " value=\"" + contra + "\" size=\"16\" maxlength=\"16\">" + errorContra + "</td>");
-        escritor.println("</tr><tr>");
-
-        escritor.println("<th align=\"right\" width=\"50%\"> Repite contraseña </th>");
-        escritor.println("<td align=\"left\"> <input type=\"password\" name=\"password2\" </td>");
-        escritor.println("</tr>");
-
-        escritor.println("</tr><tr>");
-        escritor.println("<th align=\"right\" width=\"50%\"> DNI </th>");
-        escritor.println("<td align=\"left\"> <input type=\"text\" name=\"dni\" required </td>");
-        escritor.println("</tr>");
-
-        escritor.println("</tr><tr>");
-        escritor.println("<th align=\"right\" width=\"50%\"> Correo electrónico </th>");
-        escritor.println("<td align=\"left\"> <input type=\"text\" name=\"email\" required </td>");
-        escritor.println("</tr>");
-
-        escritor.println("</tr><tr>");
-        escritor.println("<th align=\"right\" width=\"50%\"> Teléfono </th>");
-        escritor.println("<td align=\"left\"> <input type=\"text\" name=\"telefono\" required </td>");
-        escritor.println("</tr>");
-
-        escritor.println("</tr><tr>");
-        escritor.println("<th align=\"right\" width=\"50%\"> Dirección </th>");
-        escritor.println("<td align=\"left\"> <input type=\"text\" name=\"direccion\" required </td>");
-        escritor.println("</tr>");
-
-        // Boton de login
-        escritor.println("<tr>");
-        escritor.println("<td width=\"50%\"></td>");
-        escritor.println("<td align=\"left\" width=\"50%\">");
-        escritor.println("<input type=\"submit\" value=\"Registrarse y acceder \"></td>");
-        escritor.println("</tr>");
-
-        // Fin de tabla
-        escritor.println("</table>");
-
-        // Fin
-        escritor.println("</body></html>");
-
-        // Cerrar el descriptor de salida
         escritor.close();
     }
 }

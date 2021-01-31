@@ -7,7 +7,6 @@ package Servlets.Paginas;
 import Funciones.Examen;
 
 import java.io.*;
-import java.util.Map;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.servlet.ServletException;
@@ -46,16 +45,37 @@ public class Usuario extends HttpServlet {
         PrintWriter escritor = respuesta.getWriter();
 
         // TODO - Estilizar la página principal
-        escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
-            "  <head>\n" +
-            "    <meta charset=\"utf-8\">\n" +
-            "    <title>Nuevo Examenes</title>\n" +
-            "  </head>\n" +
-            "  <body>\n" +
-            "    <a href=Servlets.Examenes.Creacion> Generar TEST </a><br>" +   // REDIRECCIÓN
-            "    <a href=Servlets.Examenes.Seleccion> Elegir TEST </a><br>" +   // REDIRECCIÓN
-            "  </body>\n" +
-            "</html>");
+        escritor.println("<!DOCTYPE html>\n" +
+                "\n" +
+                "<html lang=\"es\">\n" +
+                "    <head>\n" +
+                "        <title>Nuevo Examenes</title>\n" +
+                "\n" +
+                "        <meta charset=\"utf-8\">\n" +
+                "\n" +
+                "        <link rel=\"stylesheet\" type=\"text/css\" href=\"adornos/estilos.css\">\n" +
+                "    </head>\n" +
+                "\n" +
+                "    <body>\n" +
+                "        <div id=\"contenido\">\n" +
+                "            <div id=\"banner\">\n" +
+                "                <img id=\"logo\" src=\"adornos/Seiis.jpg\" alt=\"\">\n" +
+                "                \n" +
+                "                <h1>Conectado como: " + usuario + "</h1>\n" +
+                "            </div>\n" +
+                "            \n" +
+                "            <ul id=\"navegador\">\n" +
+                "                <li><a href=Servlets.Examenes.Creacion>Generar TEST</a></li>\n" +
+                "                <li><a href=Servlets.Examenes.Seleccion>Elegir TEST</a></li>\n" +
+                "            </ul>\n" +
+                "\n" +
+                "            <div class=\"footer\">\n" +
+                "                <p id=top class=\"ftp\">Antonio J. Galán Herrera (Universidad de Málaga)</p>\n" +
+                "                <p class=\"ftp\">Copyright &#169; Todos los derechos reservados</p>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "    </body>\n" +
+                "</html>\n");
 
         escritor.close();
     }
@@ -85,7 +105,7 @@ public class Usuario extends HttpServlet {
             escritor.append("\n");
 
         } catch (IOException e) {
-            System.err.println("No puedo escribirse sobre '" + RUTA_BASE + "examenes.txt'.");
+            System.err.println("No pudo escribirse sobre '" + RUTA_BASE + "examenes.txt'.");
         }
     }
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html lang="es">
+    <head>
+        <title>Login</title>
+
+        <meta charset="utf-8">
+
+        <link rel="stylesheet" type="text/css" href="../adornos/estilos.css">
+    </head>
+
+    <body>
+        <div id="contenido">
+            <div id="banner">
+                <img id="logo" src="../adornos/Seiis.jpg" alt="">
+
+                <h1>Inicia Sesión</h1>
+            </div>
+
+            <form method="POST" action="Servlets.Proceso.Login">
+                <table align="center">
+                    <tr>
+                        <th align="right" width="50%">Usuario</th>
+
+                        <td>
+                            <input type="text" name="loginName" value="" size="16" maxlength="16"></td>
+                    </tr>
+                    <br>
+
+                    <tr>
+                        <th align="right" width="50%">Contraseña</th>
+
+                        <td align="left">
+                            <input type="password" name="password" value="" size="16" maxlength="16"></td>
+                    </tr>
+
+                    <tr>
+                        <td width="50%"></td>
+
+                        <td align="left" width="50%">
+                            <input type="submit" value="Login"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </body>
+</html>

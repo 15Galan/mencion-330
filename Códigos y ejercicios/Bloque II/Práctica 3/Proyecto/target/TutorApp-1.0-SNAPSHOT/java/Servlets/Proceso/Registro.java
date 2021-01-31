@@ -89,7 +89,7 @@ public class Registro extends HttpServlet {
             escritor.println(usuario + " " + contra);
             escritor.close();
 
-            respuesta.sendRedirect("Servlets.Paginas.Usuario");
+            respuesta.sendRedirect("Servlets.Paginas.Principal");
         }
     }
 

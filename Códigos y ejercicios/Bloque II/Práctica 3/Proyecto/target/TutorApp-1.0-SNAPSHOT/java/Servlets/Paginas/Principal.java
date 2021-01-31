@@ -13,9 +13,6 @@ import javax.servlet.ServletException;
 @WebServlet (name = "Servlets.Paginas.Principal", urlPatterns = {"/Servlets.Paginas.Principal"})
 public class Principal extends HttpServlet {
 
-    private final String RUTA_BASE = "C:\\Users\\Usuario\\Desktop\\D.S.T\\Códigos y ejercicios\\Bloque II\\Práctica 3\\Proyecto\\src\\main\\resources\\";
-    private final String RUTA_CSS = "C:\\Users\\Usuario\\Desktop\\D.S.T\\Códigos y ejercicios\\Bloque II\\Práctica 3\\Proyecto\\src\\main\\webapp\\estilos.css";
-
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
         generarPagina(respuesta);
@@ -44,26 +41,40 @@ public class Principal extends HttpServlet {
 
         // TODO - Estilizar la página principal
         escritor.println("<!DOCTYPE html>\n" +
-                "<html>\n" +
+                "\n" +
+                "<html lang=\"es\">\n" +
                 "    <head>\n" +
-                "        <meta charset=\"utf-8\">\n" +
-                "        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
-                "        <link href=\"" + RUTA_CSS + "\" rel=\"stylesheet\" type=\"text/css\" />" +
                 "        <title>Inicio</title>\n" +
+                "\n" +
+                "        <meta charset=\"utf-8\">\n" +
+                "        <!--<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">-->\n" +
+                "\n" +
+                "        <link rel=\"stylesheet\" type=\"text/css\" href=\"adornos/estilos.css\">\n" +
                 "    </head>\n" +
+                "\n" +
                 "    <body>\n" +
                 "        <div id=\"contenido\">\n" +
-                "            <div id=\"banner\">\n" +
-                "                <img src=\"" + RUTA_BASE + "Siette.jpg\">\n" +
+                "             <div id=\"banner\">\n" +
+                "                 <img id=\"logo\" src=\"adornos/Seiis.jpg\" alt=\"\">\n" +
+                "                 \n" +
+                "                 <div>\n" +
+                "                     <button onclick=\"document.getElementById('logo').src='adornos/Seiis.jpg'\">-1</button>\n" +
+                "                     <button onclick=\"document.getElementById('logo').src='adornos/Siette.jpg'\">+1</button>\n" +
+                "                 </div>\n" +
+                "\n" +
+                "                 <h1>Bienvenido al Sistema Tutor</h1>\n" +
                 "            </div>\n" +
+                "\n" +
                 "            <ul id=\"navegador\">\n" +
-                "                    <li><a href=\"Servlets.Paginas.Login\">Login</a></li>\n" +
-                "                    <li><a href=\"Servlets.Paginas.Registro\">Registro</a></li>\n" +
+                "                <li><a href=\"Servlets.Paginas.Login\">Iniciar Sesión</a></li>\n" +
+                "                <li><a href=\"Servlets.Paginas.Registro\">Registrarse</a></li>\n" +
+                "            <!--<li><a href=\"Servlets.Paginas.Principal\">Salir</a></li>-->\n" +
                 "            </ul>\n" +
-                "            <h1>Bienvenido al Sistema Tutor</h1>\n" +
-                "                <p>Inserte su queja acá.</p>\n" +
-                "            <p id=\"Copyright\">Antonio J. Galán Herrera (Universidad de Málaga)</p>\n" +
-                "            <p id=\"Copyright\">Copyright(c) Todos los derechos reservados.</p>\n" +
+                "\n" +
+                "            <div class=\"footer\">\n" +
+                "                <p id=top class=\"ftp\">Antonio J. Galán Herrera (Universidad de Málaga)</p>\n" +
+                "                <p class=\"ftp\">Copyright &#169; Todos los derechos reservados</p>\n" +
+                "            </div>\n" +
                 "        </div>\n" +
                 "    </body>\n" +
                 "</html>\n");

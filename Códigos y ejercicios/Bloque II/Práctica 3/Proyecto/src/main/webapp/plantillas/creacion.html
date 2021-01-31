@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html lang="es">
+    <head>
+        <title>Nuevo Examen</title>
+
+        <meta charset="utf-8">
+
+        <link rel="stylesheet" type="text/css" href="../adornos/estilos.css">
+    </head>
+
+    <body>
+        <div id="contenido">
+            <h1>Nuevo examen creado</h1>
+
+            <p>Nombre: $examen.getTitulo()</p>
+            <p>Descripción: $examen.getDescripcion()</p>
+            <p>Preguntas: $examen.getPreguntas().size()</p>
+
+            <form method="POST" action="Servlets.Paginas.Usuario">
+                <input type="submit" value="Regresar">
+            </form>
+        </div>
+    </body>
+</html>

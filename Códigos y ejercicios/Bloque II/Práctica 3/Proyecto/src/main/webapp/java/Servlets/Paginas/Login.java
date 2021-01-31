@@ -73,55 +73,53 @@ public class Login extends HttpServlet {
         PrintWriter escritor = respuesta.getWriter();
 
         /* Inicio. */
-        escritor.println("<html><head><title>");
-        escritor.println("Biblioteca Pública María Moliner");
-        escritor.println("</title></head>");
-        escritor.println("<body text=\"#000000\" bgcolor=\"#ffffff\">");
-
-        /* Inicio del form. */
-        escritor.println("<form method=\"POST\" action=\"Servlets.Proceso.Login\">");
-        escritor.println("<h1 align=\"center\"> Biblioteca Pública María Moliner </h1>");
-        escritor.println("<h1 align=\"center\"> Como la del diccionario de uso de la lengua. </h1>");
-
-        /* Inicio de la table. */
-        escritor.println("<table width=\"100%\" border=\"0\" align=\"center\"cellspacing=\"12\">");
-
-        /* Login. */
-        escritor.println("<tr>");
-        escritor.println("<th align=\"right\" width=\"50%\"> Usuario </th>");
-
-        escritor.println("<td align=\"left\">" + "<input type=\"text\" name=\"loginName\" "
-            + " value=\"" + usuario + "\" size=\"16\" maxlength=\"16\">"
-            + errorUsuario + "</td>");
-        escritor.println("</tr><br>");
-
-        escritor.println("<tr>");
-        escritor.println("<th align=\"right\" width=\"50%\"> Contraseña </th>");
-        escritor.println("<td align=\"left\"> <input type=\"password\" name=\"password\" " + " value=\"" + contra
-            + "\" size=\"16\" maxlength=\"16\">" + errorContra + "</td>");
-        escritor.println("</tr>");
-
-        /* Registrarse/Invitado */
-        escritor.println("<tr>");
-        escritor.println("<td width=\"50%\"></td>");
-        escritor.println("<td align=\"left\" width=\"50%\">");
-        escritor.println("<a href=\"Servlets.Paginas.Registro\">Registrarse</a>");
-        escritor.println("</tr><tr>");
-        escritor.println("<td width=\"50%\"></td>");
-        escritor.println("</tr>");
-
-        /* Boton de login. */
-        escritor.println("<tr>");
-        escritor.println("<td width=\"50%\"></td>");
-        escritor.println("<td align=\"left\" width=\"50%\"> ");
-        escritor.println("<input type=\"submit\" value=\"Login\"></td>");
-        escritor.println("</tr>");
-
-        /* Fin de tabla. */
-        escritor.println("</table>");
-
-        /* Fin. */
-        escritor.println("</body></html>");
+        escritor.println("<!DOCTYPE html>\n" +
+                "\n" +
+                "<html lang=\"es\">\n" +
+                "    <head>\n" +
+                "        <title>Login</title>\n" +
+                "\n" +
+                "        <meta charset=\"utf-8\">\n" +
+                "\n" +
+                "        <link rel=\"stylesheet\" type=\"text/css\" href=\"adornos/estilos.css\">\n" +
+                "    </head>\n" +
+                "\n" +
+                "    <body>\n" +
+                "        <div id=\"contenido\">\n" +
+                "            <div id=\"banner\">\n" +
+                "                <img id=\"logo\" src=\"adornos/Seiis.jpg\" alt=\"\">\n" +
+                "\n" +
+                "                <h1>Inicia Sesión</h1>\n" +
+                "            </div>\n" +
+                "            \n" +
+                "            <form method=\"POST\" action=\"Servlets.Proceso.Login\">\n" +
+                "                <table align=\"center\">\n" +
+                "                    <tr>\n" +
+                "                        <th align=\"right\" width=\"50%\">Usuario</th>\n" +
+                "\n" +
+                "                        <td>\n" +
+                "                            <input type=\"text\" name=\"loginName\" value=\"\" size=\"16\" maxlength=\"16\"></td>\n" +
+                "                    </tr>\n" +
+                "                    <br>\n" +
+                "\n" +
+                "                    <tr>\n" +
+                "                        <th align=\"right\" width=\"50%\">Contraseña</th>\n" +
+                "\n" +
+                "                        <td align=\"left\">\n" +
+                "                            <input type=\"password\" name=\"password\" value=\"\" size=\"16\" maxlength=\"16\"></td>\n" +
+                "                    </tr>\n" +
+                "\n" +
+                "                    <tr>\n" +
+                "                        <td width=\"50%\"></td>\n" +
+                "\n" +
+                "                        <td align=\"left\" width=\"50%\">\n" +
+                "                            <input type=\"submit\" value=\"Login\"></td>\n" +
+                "                    </tr>\n" +
+                "                </table>\n" +
+                "            </form>\n" +
+                "        </div>\n" +
+                "    </body>\n" +
+                "</html>\n");
 
         escritor.close();
     }

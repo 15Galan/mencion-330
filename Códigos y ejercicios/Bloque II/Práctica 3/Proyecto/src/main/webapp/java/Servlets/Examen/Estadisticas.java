@@ -1,5 +1,7 @@
 package Servlets.Examen;
 
+import Funciones.Examen;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -33,15 +35,23 @@ public class Estadisticas extends HttpServlet {
 
         PrintWriter escritor = respuesta.getWriter();
 
-        escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
-            "  <head>\n" +
-            "    <meta charset=\"utf-8\">\n" +
-            "    <title>Estadísticas</title>\n" +
-            "  </head>\n" +
-            "  <body>\n" +
-            "    <a href=Servlets.Paginas.Usuario> Volver al perfil </a><br>" +       // REDIRECCIÓN
-            "  </body>\n" +
-            "</html>");
+        escritor.println("<!DOCTYPE html>\n" +
+                "\n" +
+                "<html lang=\"es\">\n" +
+                "    <head>\n" +
+                "        <title>Login</title>\n" +
+                "    \n" +
+                "        <meta charset=\"utf-8\">\n" +
+                "    \n" +
+                "        <link rel=\"stylesheet\" type=\"text/css\" href=\"adornos/estilos.css\">\n" +
+                "    </head>\n" +
+                "    \n" +
+                "    <body>\n" +
+                "        <div id=\"contenido\">\n" +
+                "            <p>$estadisticas</p>\n" +
+                "        </div>\n" +
+                "    </body>\n" +
+                "</html>\n");
 
         escritor.close();
     }

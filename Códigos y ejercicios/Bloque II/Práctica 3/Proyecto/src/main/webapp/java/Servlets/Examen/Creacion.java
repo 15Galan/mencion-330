@@ -41,21 +41,31 @@ public class Creacion extends HttpServlet {
 
         PrintWriter escritor = respuesta.getWriter();
 
-        escritor.println("<html lang=\"es\" dir=\"ltr\">\n" +
-            "  <head>\n" +
-            "    <meta charset=\"utf-8\">\n" +
-            "    <title>Nuevo Examen</title>\n" +
-            "  </head>\n" +
-            "  <body>\n" +
-            "    <p>Examen creado: " + examen.getTitulo() + "</p>\n" +
-            "    <p>Descripción: " + examen.getDescripcion() + "</p>\n" +
-            "    <p>Número de preguntas: " + examen.getPreguntas().size() + "</p>" +
-            "    <form action=\"Servlets.Paginas.Usuario\" method=\"POST\">\n" +
-            "      <input type=\"submit\" href=Servlets.Examenes.Usuario value=\"Volver al perfil\">\n" +
-            "    </form>" +
-//            "    <a href=Servlets.Paginas.Usuario> Volver al perfil </a><br>" +     // REDIRECCIÓN
-            "  </body>\n" +
-            "</html>");
+        escritor.println("<!DOCTYPE html>\n" +
+                "\n" +
+                "<html lang=\"es\">\n" +
+                "    <head>\n" +
+                "        <title>Nuevo Examen</title>\n" +
+                "\n" +
+                "        <meta charset=\"utf-8\">\n" +
+                "\n" +
+                "        <link rel=\"stylesheet\" type=\"text/css\" href=\"adornos/estilos.css\">\n" +
+                "    </head>\n" +
+                "\n" +
+                "    <body>\n" +
+                "        <div id=\"contenido\">\n" +
+                "            <h1>Nuevo examen creado</h1>\n" +
+                "            \n" +
+                "            <p>Nombre: " + examen.getTitulo() + "</p>\n" +
+                "            <p>Descripción: " + examen.getDescripcion() + "</p>\n" +
+                "            <p>Preguntas: " + examen.getPreguntas().size() + "</p>\n" +
+                "\n" +
+                "            <form method=\"POST\" action=\"Servlets.Paginas.Usuario\">\n" +
+                "                <input type=\"submit\" value=\"Regresar\">\n" +
+                "            </form>\n" +
+                "        </div>\n" +
+                "    </body>\n" +
+                "</html>\n");
 
         escritor.close();
     }
