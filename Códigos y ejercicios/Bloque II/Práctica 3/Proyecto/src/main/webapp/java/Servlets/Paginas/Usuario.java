@@ -131,7 +131,7 @@ public class Usuario extends HttpServlet {
 
         for(File fichero : new File(RUTA_BASE).listFiles()) {
             lista.append("<li>");
-            lista.append("<a href=\"Servlets.Examen.Seleccion\" name=\"" + fichero.getName() + "\">");
+            lista.append("<a href=\"Servlets.Examenes.Seleccion\" name=\"" + fichero.getName() + "\">");
             lista.append(fichero.getName());
             lista.append("</a>");
             lista.append("</li>");

@@ -90,7 +90,7 @@ public class Usuario extends HttpServlet {
 
         if (fichero.listFiles().length == 0) {
             for (int i = 0; i < 3; i++) {
-                Examen ejemplo = new Examen("Ejemplo " + (i+1), "Test de ejemplo generado automáticamente");
+                Examen ejemplo = new Examen("Ejemplo " + (i+1), "Test de ejemplo generado automaticamente");
 
                 ejemplo.escribirFichero(new File(RUTA_BASE + "examen" + (i+1) + ".txt"));
             }
@@ -131,7 +131,7 @@ public class Usuario extends HttpServlet {
 
         for(File fichero : new File(RUTA_BASE).listFiles()) {
             lista.append("<li>");
-            lista.append("<a href=\"Servlets.Examen.Seleccion\" name=\"" + fichero.getName() + "\">");
+            lista.append("<a href=\"Servlets.Examenes.Seleccion\" name=\"" + fichero.getName() + "\">");
             lista.append(fichero.getName());
             lista.append("</a>");
             lista.append("</li>");

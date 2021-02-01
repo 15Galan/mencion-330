@@ -105,7 +105,7 @@ public class Examen {
         int semilla = ThreadLocalRandom.current().nextInt(1, longitud+1);
         String pregunta;
 
-        // Se eliminó el símbolo '¿' para evitar problemas de codificación del archivo
+        // Se eliminaron caracteres que daban problemas con la codificación del archivo
         switch (semilla) {
             case 1:
                 pregunta = "Estudias los lunes?";
@@ -116,7 +116,7 @@ public class Examen {
                 break;
 
             case 3:
-                pregunta = "Estudias los miércoles?";
+                pregunta = "Estudias los miercoles?";
                 break;
 
             case 4:
@@ -128,7 +128,7 @@ public class Examen {
                 break;
 
             case 6:
-                pregunta = "Estudias los sábados?";
+                pregunta = "Estudias los sabados?";
                 break;
 
             case 7:
@@ -140,7 +140,7 @@ public class Examen {
                 break;
 
             case 9:
-                pregunta = "Estudias acompañado?";
+                pregunta = "Estudias en grupo?";
                 break;
 
             case 10:
@@ -148,7 +148,7 @@ public class Examen {
                 break;
 
             default:
-                pregunta = "Cómo hemos llegado aquí?";
+                pregunta = "Como hemos llegado aquí?";
         }
 
         return pregunta;

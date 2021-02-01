@@ -12,8 +12,6 @@ import javax.servlet.http.*;
 @WebServlet(name = "Servlets.Examenes.Seleccion", urlPatterns = {"/Servlets.Examenes.Seleccion"})
 public class Seleccion extends HttpServlet {
 
-    private Examen examen;
-
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
         generarPagina(respuesta, LoginManager.getLoginName(peticion));

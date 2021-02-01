@@ -12,10 +12,12 @@ import javax.servlet.http.*;
 @WebServlet(name = "Servlets.Examenes.Seleccion", urlPatterns = {"/Servlets.Examenes.Seleccion"})
 public class Seleccion extends HttpServlet {
 
-    private Examen examen;
+    private String documento;
 
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
+        documento = peticion.getParameter("examen3.txt");
+
         generarPagina(respuesta, LoginManager.getLoginName(peticion));
     }
 
@@ -51,7 +53,7 @@ public class Seleccion extends HttpServlet {
                 "\n" +
                 "    <body>\n" +
                 "        <div id=\"contenido\">\n" +
-                "            <h1>Examen seleccionado</h1>\n" +
+                "            <h1>Examen seleccionado:" + documento + "</h1>\n" +
                 "\n" +
                 "            <form method=\"POST\" action=\"Servlets.Examen.Pregunta\">\n" +
                 "                <input type=\"submit\" value=\"Comenzar\">\n" +
