@@ -39,7 +39,6 @@ public class Principal extends HttpServlet {
 
         PrintWriter escritor = respuesta.getWriter();
 
-        // TODO - Estilizar la página principal
         escritor.println("<!DOCTYPE html>\n" +
                 "\n" +
                 "<html lang=\"es\">\n" +

@@ -1,7 +1,9 @@
 package Servlets.Examen;
 
 import Funciones.Examen;
+import Funciones.LoginManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -14,12 +16,19 @@ import javax.servlet.http.HttpServletResponse;
 public class Creacion extends HttpServlet {
 
     private Examen examen;
+    private String RUTA_BASE;
+    private String documento;
+
 
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
-        examen = new Examen("Nuevo Examen", "Blablabla blablá, bla blabla...");
+        RUTA_BASE = "C:\\Users\\Usuario\\Desktop\\D.S.T\\Códigos y ejercicios\\Bloque II\\Práctica 3\\Proyecto\\src\\main\\webapp\\examenes\\";
+        documento = generarNombre();
 
-        generarPagina(respuesta);
+        examen = new Examen("Nuevo Examen", "Blablabla blablá, bla blabla...");
+        examen.escribirFichero(new File(RUTA_BASE + documento));
+
+        generarPagina(respuesta, LoginManager.getLoginName(peticion));
     }
 
     @Override
@@ -33,10 +42,11 @@ public class Creacion extends HttpServlet {
      * Define las sentencias HTML que forman la página.
      *
      * @param respuesta     Conexión a la que se envía la página
+     * @param usuario       Dato de LOGIN
      *
      * @throws IOException  Error al escribir datos en la respuesta
      */
-    private void generarPagina(HttpServletResponse respuesta) throws IOException {
+    private void generarPagina(HttpServletResponse respuesta, String usuario) throws IOException {
         respuesta.setContentType("text/html; charset=ISO-8859-1");
 
         PrintWriter escritor = respuesta.getWriter();
@@ -54,7 +64,7 @@ public class Creacion extends HttpServlet {
                 "\n" +
                 "    <body>\n" +
                 "        <div id=\"contenido\">\n" +
-                "            <h1>Nuevo examen creado</h1>\n" +
+                "            <h1>Guardado como '" + documento + "'</h1>\n" +
                 "            \n" +
                 "            <p>Nombre: " + examen.getTitulo() + "</p>\n" +
                 "            <p>Descripción: " + examen.getDescripcion() + "</p>\n" +
@@ -67,10 +77,24 @@ public class Creacion extends HttpServlet {
                 "            <ul id=\"navegador\">\n" +
                 "                <li><br><a href=\"Servlets.Paginas.Principal\">Volver al Inicio</a></li>\n" +
                 "            </ul>" +
+                "\n" +
+                "            <p>Conectado como '" + usuario + "'</p>" +
                 "        </div>\n" +
                 "    </body>\n" +
                 "</html>\n");
 
         escritor.close();
+    }
+
+
+    // Métodos propios
+    /**
+     * Genera el nombre del fichero de un examen
+     * respetando el de los exámenes anteriores.
+     *
+     * @return  Un nombre para el fichero de un examen
+     */
+    private String generarNombre() {
+        return "examen" + (new File(RUTA_BASE).listFiles().length + 1) + ".txt";
     }
 }

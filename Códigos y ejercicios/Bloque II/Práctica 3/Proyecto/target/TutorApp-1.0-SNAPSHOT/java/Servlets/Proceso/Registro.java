@@ -58,7 +58,6 @@ public class Registro extends HttpServlet {
             }
         } while (sc.hasNext() && !encontrado);
 
-        // TODO - Limpiar errores
         // Detectar errores
         if (usuario.length() == 0) {
             errores.put("loginName", "\tCampo obligatorio");       // Login vacío

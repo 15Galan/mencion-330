@@ -1,5 +1,8 @@
 package Servlets.Examen;
 
+import Funciones.Examen;
+import Funciones.LoginManager;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -9,9 +12,11 @@ import javax.servlet.http.*;
 @WebServlet(name = "Servlets.Examenes.Seleccion", urlPatterns = {"/Servlets.Examenes.Seleccion"})
 public class Seleccion extends HttpServlet {
 
+    private Examen examen;
+
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
-        generarPagina(respuesta);
+        generarPagina(respuesta, LoginManager.getLoginName(peticion));
     }
 
     @Override
@@ -28,7 +33,7 @@ public class Seleccion extends HttpServlet {
      *
      * @throws IOException  Error al escribir datos en la respuesta
      */
-    private void generarPagina(HttpServletResponse respuesta) throws IOException {
+    private void generarPagina(HttpServletResponse respuesta, String usuario) throws IOException {
         respuesta.setContentType("text/html; charset=ISO-8859-1");
 
         PrintWriter escritor = respuesta.getWriter();
@@ -55,6 +60,8 @@ public class Seleccion extends HttpServlet {
                 "            <ul id=\"navegador\">\n" +
                 "                <li><br><a href=\"Servlets.Paginas.Principal\">Volver al Inicio</a></li>\n" +
                 "            </ul>" +
+                "\n" +
+                "            <p>Conectado como '" + usuario + "'</p>" +
                 "        </div>\n" +
                 "    </body>\n" +
                 "</html>\n");

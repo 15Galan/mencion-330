@@ -16,7 +16,7 @@ import javax.servlet.ServletException;
 @WebServlet (name = "Servlets.Paginas.Usuario", urlPatterns = {"/Servlets.Paginas.Usuario"})
 public class Usuario extends HttpServlet {
 
-    private final String RUTA_BASE = "C:\\Users\\Usuario\\Desktop\\D.S.T\\Códigos y ejercicios\\Bloque II\\Práctica 3\\Proyecto\\src\\main\\resources\\";
+    private final String RUTA_BASE = "C:\\Users\\Usuario\\Desktop\\D.S.T\\Códigos y ejercicios\\Bloque II\\Práctica 3\\Proyecto\\src\\main\\webapp\\examenes\\";
 
     @Override
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException {
@@ -46,7 +46,6 @@ public class Usuario extends HttpServlet {
 
         PrintWriter escritor = respuesta.getWriter();
 
-        // TODO - Estilizar la página principal
         escritor.println("<!DOCTYPE html>\n" +
                 "\n" +
                 "<html lang=\"es\">\n" +
@@ -68,7 +67,7 @@ public class Usuario extends HttpServlet {
                 "            \n" +
                 "            <ul id=\"navegador\">\n" +
                 "                <li><a href=Servlets.Examenes.Creacion>Generar TEST</a></li>\n" +
-                "                <li><a href=Servlets.Examenes.Seleccion>Elegir TEST</a></li>\n" +
+                "                <br>" + listaExamenes() +
                 "                <li><br><a href=Servlets.Paginas.Principal>Volver al Inicio</a></li>\n" +
                 "            </ul>" +
                 "\n" +
@@ -83,18 +82,28 @@ public class Usuario extends HttpServlet {
         escritor.close();
     }
 
+    /**
+     * Genera 3 exámenes de ejemplo si el fichero de exámenes está vacío.
+     */
     public void inicializarExamenes() {
-        File fichero = new File(RUTA_BASE + "examenes.txt");
-//        examenesTXT = fichero.getAbsolutePath();
+        File fichero = new File(RUTA_BASE);
 
-        if (!fichero.exists()) {
+        if (fichero.listFiles().length == 0) {
             for (int i = 0; i < 3; i++) {
-                anadirExamen(new Examen("Inicial " + (i+1), "Test generado en el arranque"), fichero);
+                Examen ejemplo = new Examen("Ejemplo " + (i+1), "Test de ejemplo generado automaticamente");
+
+                ejemplo.escribirFichero(new File(RUTA_BASE + "examen" + (i+1) + ".txt"));
             }
         }
     }
 
-    public void anadirExamen(Examen examen, File fichero) {
+    /**
+     * Guarda los datos de un examen en un fichero.
+     *
+     * @param examen    Examen del que extraer los datos
+     * @param fichero   Fichero donde guardar los datos
+     */
+    public void registrarExamen(Examen examen, File fichero) {
         try (FileWriter escritor = new FileWriter(fichero, true)) {
 
             escritor.append(examen.getTitulo()).append("\n");
@@ -105,10 +114,30 @@ public class Usuario extends HttpServlet {
                 escritor.append(examen.getRespuestas().get(i)).append("\n");
             }
 
-            escritor.append("\n");
+            fichero.createNewFile();
 
         } catch (IOException e) {
-            System.err.println("No pudo escribirse sobre '" + RUTA_BASE + "examenes.txt'.");
+            System.err.println("No pudo escribirse sobre '" + fichero.getAbsolutePath() + "'.");
         }
+    }
+
+    /**
+     * Genera una lista con los nombres de los exámenes disponibles.
+     *
+     * @return  Lista de exámenes en formato HTML
+     */
+    public String listaExamenes() {
+        StringBuilder lista = new StringBuilder();
+
+        for(File fichero : new File(RUTA_BASE).listFiles()) {
+            lista.append("<li>");
+            lista.append("<a href=\"Servlets.Examen.Seleccion\" name=\"" + fichero.getName() + "\">");
+            lista.append(fichero.getName());
+            lista.append("</a>");
+            lista.append("</li>");
+            lista.append("\n");
+        }
+
+        return lista.toString();
     }
 }

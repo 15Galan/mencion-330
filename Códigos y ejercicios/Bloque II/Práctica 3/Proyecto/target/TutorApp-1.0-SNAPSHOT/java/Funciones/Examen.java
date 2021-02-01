@@ -1,6 +1,8 @@
 package Funciones;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -103,49 +105,50 @@ public class Examen {
         int semilla = ThreadLocalRandom.current().nextInt(1, longitud+1);
         String pregunta;
 
+        // Se eliminó el símbolo '¿' para evitar problemas de codificación del archivo
         switch (semilla) {
             case 1:
-                pregunta = "¿Estudias los lunes?";
+                pregunta = "Estudias los lunes?";
                 break;
 
             case 2:
-                pregunta = "¿Estudias los martes?";
+                pregunta = "Estudias los martes?";
                 break;
 
             case 3:
-                pregunta = "¿Estudias los miércoles?";
+                pregunta = "Estudias los miércoles?";
                 break;
 
             case 4:
-                pregunta = "¿Estudias los jueves?";
+                pregunta = "Estudias los jueves?";
                 break;
 
             case 5:
-                pregunta = "¿Estudias los viernes?";
+                pregunta = "Estudias los viernes?";
                 break;
 
             case 6:
-                pregunta = "¿Estudias los sábados?";
+                pregunta = "Estudias los sábados?";
                 break;
 
             case 7:
-                pregunta = "¿Estudias los domingos?";
+                pregunta = "Estudias los domingos?";
                 break;
 
             case 8:
-                pregunta = "¿Estudias solo?";
+                pregunta = "Estudias solo?";
                 break;
 
             case 9:
-                pregunta = "¿Estudias acompañado?";
+                pregunta = "Estudias acompañado?";
                 break;
 
             case 10:
-                pregunta = "¿Estudias?";
+                pregunta = "Estudias?";
                 break;
 
             default:
-                pregunta = "¿Cómo hemos llegado aquí?";
+                pregunta = "Cómo hemos llegado aquí?";
         }
 
         return pregunta;
@@ -158,7 +161,7 @@ public class Examen {
      * @return  "Sí", "No" o "A veces"
      */
     private String crearRespuesta() {
-        String[] opciones = {"Sí", "No", "A veces"};
+        String[] opciones = {"Si", "No", "A veces"};
         int semilla = ThreadLocalRandom.current().nextInt(0, opciones.length);
 
         return opciones[semilla];
@@ -205,5 +208,28 @@ public class Examen {
         }
 
         return mensaje.toString();
+    }
+
+    /**
+     * Guarda los datos de este examen en un fichero.
+     *
+     * @param fichero   Fichero donde guardar los datos
+     */
+    public void escribirFichero(File fichero) {
+        try (FileWriter escritor = new FileWriter(fichero, true)) {
+
+            escritor.append(getTitulo()).append("\n");
+            escritor.append(getDescripcion()).append("\n");
+
+            for (int i = 0; i < getPreguntas().size(); i++) {
+                escritor.append(getPreguntas().get(i)).append("\n");
+                escritor.append(getRespuestas().get(i)).append("\n");
+            }
+
+            fichero.createNewFile();
+
+        } catch (IOException e) {
+            System.err.println("No pudo escribirse sobre '" + fichero.getAbsolutePath() + "'.");
+        }
     }
 }

@@ -23,7 +23,6 @@ public class Registro extends HttpServlet {
     public void doGet(HttpServletRequest peticion, HttpServletResponse respuesta) throws IOException, ServletException {
         Map errores = (Map) peticion.getAttribute("errors");
 
-        // TODO - Añadir el resto de campos
         if (errores != null) {
             if (errores.containsKey("loginName")) {
                 usuario = peticion.getParameter("loginName");
