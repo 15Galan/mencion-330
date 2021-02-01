@@ -53,105 +53,10 @@ public class Registro extends HttpServlet {
      * @throws IOException  Error al escribir datos en la respuesta
      */
     public void generarPagina(HttpServletResponse respuesta) throws IOException {
-        // TODO - Estilizar la página de registro
-        // TODO - Implementar 'required' en USUARIO y CONTRASEÑA
         // Generar respuesta
         respuesta.setContentType("text/html; charset=ISO-8859-1");
 
         PrintWriter escritor = respuesta.getWriter();
-
-        // Inicio
-//        escritor.println("<!DOCTYPE html>\n" +
-//                "\n" +
-//                "<html lang=\"es\">\n" +
-//                "    <head>\n" +
-//                "        <title>Registro</title>\n" +
-//                "\n" +
-//                "        <meta charset=\"utf-8\">\n" +
-//                "\n" +
-//                "        <link rel=\"stylesheet\" type=\"text/css\" href=\"adornos/estilos.css\">\n" +
-//                "    </head>\n" +
-//                "\n" +
-//                "    <body>" +
-//                "        <div id\"contenido\">\n" +
-//                "            <div id=\"banner\">\n" +
-//                "                <img id=\"logo\" src=\"adornos/Seiis.jpg\" alt=\"\">\n" +
-//                "\n" +
-//                "                <h1>Registro</h1>\n" +
-//                "            </div>" +
-//                "        <form method=\"POST\" action=\"Servlets.Proceso.Registro\">\n" +
-//                "            <table width=\"100%\" border=\"0\" align=\"center\" cellspacing=\"12\">\n" +
-//                "\n" +
-//                "                <tr>\n" +
-//                "                    <th align=\"right\" width=\"50%\">Usuario</th>\n" +
-//                "\n" +
-//                "                    <td align=\"left\">\n" +
-//                "                        <input type=\"text\" name=\"loginName\" value=\"" + usuario + "\" size=\"16\" maxlength=\"16\">\n" +
-//                "                       " + errorUsuario +
-//                "                    </td>\n" +
-//                "                </tr>\n" +
-//                "                <br>\n" +
-//                "\n" +
-//                "                <tr>\n" +
-//                "                    <th align=\"right\" width=\"50%\">Contraseña</th>\n" +
-//                "                    \n" +
-//                "                    <td align=\"left\">\n" +
-//                "                        <input type=\"password\" name=\"password\" value=\"" + contra + "\" size=\"16\" maxlength=\"16\">\n" +
-//                "                        " + errorContra +
-//                "                    </td>\n" +
-//                "                </tr>\n" +
-//                "                \n" +
-//                "                <tr>\n" +
-//                "                    <th align=\"right\" width=\"50%\">Repite contraseña</th>\n" +
-//                "                    \n" +
-//                "                    <td align=\"left\">\n" +
-//                "                        <input type=\"password\" name=\"password2\">\n" +
-//                "                    </td>\n" +
-//                "                </tr>\n" +
-//                "                \n" +
-//                "                <tr>\n" +
-//                "                    <th align=\"right\" width=\"50%\"> DNI </th>\n" +
-//                "                    \n" +
-//                "                    <td align=\"left\">\n" +
-//                "                        <input type=\"text\" name=\"dni\" required>\n" +
-//                "                    </td>\n" +
-//                "                </tr>\n" +
-//                "                \n" +
-//                "                <tr>\n" +
-//                "                    <th align=\"right\" width=\"50%\">Correo electrónico</th>\n" +
-//                "                    \n" +
-//                "                    <td align=\"left\">\n" +
-//                "                        <input type=\"text\" name=\"email\" required>\n" +
-//                "                    </td>\n" +
-//                "                </tr>\n" +
-//                "                                \n" +
-//                "                <tr>\n" +
-//                "                    <th align=\"right\" width=\"50%\">Teléfono</th>\n" +
-//                "                    \n" +
-//                "                    <td align=\"left\">\n" +
-//                "                        <input type=\"text\" name=\"telefono\" required>\n" +
-//                "                    </td>\n" +
-//                "                </tr>\n" +
-//                "                                \n" +
-//                "                <tr>\n" +
-//                "                    <th align=\"right\" width=\"50%\">Dirección</th>\n" +
-//                "                    \n" +
-//                "                    <td align=\"left\">\n" +
-//                "                        <input type=\"text\" name=\"direccion\" required>\n" +
-//                "                    </td>\n" +
-//                "                </tr>\n" +
-//                "                \n" +
-//                "                <tr>\n" +
-//                "                    <td width=\"50%\"></td>\n" +
-//                "                    \n" +
-//                "                    <td align=\"left\" width=\"50%\">\n" +
-//                "                        <input type=\"submit\" value=\"Registrarse y acceder\">\n" +
-//                "                    </td>\n" +
-//                "                </tr>\n" +
-//                "            </table>\n" +
-//                "        </form>\n" +
-//                "    </div></body>\n" +
-//                "</html>\n");
 
         escritor.println("<!DOCTYPE html>\n" +
                 "\n" +
@@ -188,7 +93,7 @@ public class Registro extends HttpServlet {
                 "                    <th align=\"right\" width=\"50%\">Contraseña</th>\n" +
                 "                    \n" +
                 "                    <td align=\"left\">\n" +
-                "                        <input type=\"password\" name=\"password\" value=\"" + contra + "\" size=\"16\" maxlength=\"16\">\n" +
+                "                        <input type=\"password\" name=\"password\" value=\"" + contra + "\" size=\"16\" maxlength=\"16\" required>\n" +
                 "                        " + errorContra +
                 "                    </td>\n" +
                 "                </tr>\n" +
@@ -197,7 +102,7 @@ public class Registro extends HttpServlet {
                 "                        <th align=\"right\" width=\"50%\">Repite contraseña</th>\n" +
                 "\n" +
                 "                        <td align=\"left\">\n" +
-                "                            <input type=\"password\" name=\"password2\">\n" +
+                "                            <input type=\"password\" name=\"password2\" required>\n" +
                 "                        </td>\n" +
                 "                    </tr>\n" +
                 "\n" +
